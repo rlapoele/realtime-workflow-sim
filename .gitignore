@@ -1,6 +1,7 @@
 node_modules/
 dist/
 .astro/
+.playwright-cli/
 coverage/
 .env
 .env.*
@@ -8,5 +9,6 @@ coverage/
 *.log
 *.pem
 .DS_Store
+*.tsbuildinfo
 .idea/
 .vscode/

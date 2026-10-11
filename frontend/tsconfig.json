@@ -1,0 +1,14 @@
+{
+  "extends": "astro/tsconfigs/strictest",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "exactOptionalPropertyTypes": true,
+    "noUncheckedIndexedAccess": true,
+    "paths": {
+      "@/*": ["src/*"]
+    },
+    "types": ["@testing-library/jest-dom", "vitest/globals"]
+  },
+  "include": [".astro/types.d.ts", "**/*", "../shared/**/*.ts"],
+  "exclude": ["dist"]
+}

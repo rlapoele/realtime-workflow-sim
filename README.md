@@ -1,31 +1,100 @@
 # AgentFlow Live
 
-AgentFlow Live is a planned service-desk workflow simulation built as a strict-TypeScript npm-workspaces monorepo with NestJS, Astro, React, TanStack Query, and Server-Sent Events.
+AgentFlow Live is a fictional service-desk workflow simulation delivered through reviewable phases. Phase 1 provides the strict-TypeScript npm workspace, shared contracts, NestJS health API, and Astro/React application shell. Workflow catalogue and execution behavior are intentionally not implemented yet.
 
-The repository is currently in the planning checkpoint. Product implementation has deliberately not started.
+## Prerequisites
 
-Local use is a release gate, not an afterthought. Before any Railway handoff, the finished application must install and run locally with ordinary Node/npm commands, and the README must include a browser checklist for all four workflows, refresh/reconnect behavior, mobile layout, and keyboard use. Docker is not expected because the prototype has no database or external runtime dependency.
+- Node.js 22.12 or newer
+- npm 11 or newer
 
-## Continue the project
+Docker is not required. The prototype has no database or external runtime dependency.
 
-Review these files in order:
+## Install
 
-1. `AGENTS.md` — rules for phased work and session handoff.
-2. `docs/specification.md` — authoritative product and technical requirements.
-3. `tasks/plan.md` — seven-phase implementation sequence and risks.
-4. `tasks/todo.md` — acceptance criteria and verification checklist.
-5. `tasks/progress.md` — the only source of truth for the next phase.
+From the repository root:
 
-After reviewing the plan, tell Codex: **Proceed with the next step.** Codex must complete only the phase named in `tasks/progress.md`, record verification evidence, update progress, and stop for review.
+```sh
+npm ci
+```
 
-## Branch model
+The root lockfile installs both `backend` and `frontend` workspaces.
 
-- `dev` is the default branch and the only branch for routine implementation work.
-- `releases` contains production-quality revisions. Railway will be configured to deploy from this branch after the owner explicitly approves a promotion and push.
-- `main` is the backup branch for the last accepted release state; it is not the default and does not trigger deployment.
+## Environment
 
-See `docs/decisions/0002-three-branch-release-workflow.md` for promotion safeguards. No remote repository is configured yet.
+The checked-in examples contain safe local values:
 
-## Deployment boundary
+```sh
+cp backend/.env.example backend/.env
+cp frontend/.env.example frontend/.env
+```
 
-The project is intended to become Railway-ready, but Codex must not deploy it or create Railway resources. Phase 7 produces and verifies exact instructions for the owner to deploy the two services manually.
+Backend variables:
+
+- `PORT` — API port, default `3000`
+- `FRONTEND_ORIGIN` — exact browser origin allowed by CORS, default `http://localhost:4321`
+
+Frontend variables:
+
+- `PUBLIC_API_URL` — browser-visible API base URL; required during production builds
+- `HOST` — production server host, locally `0.0.0.0`
+- `PORT` — frontend port, locally `4321`
+
+The local development fallback for `PUBLIC_API_URL` is `http://localhost:3000`. Production builds fail clearly when it is missing rather than silently targeting localhost.
+
+## Development
+
+Start both applications from the repository root:
+
+```sh
+npm run dev
+```
+
+Then open [http://localhost:4321](http://localhost:4321). The backend health endpoint is [http://localhost:3000/health](http://localhost:3000/health).
+
+The root process stops both applications when you press `Ctrl+C`.
+
+## Verification
+
+Run the automated Phase 1 checks:
+
+```sh
+npm run test
+npm run typecheck
+npm run build
+```
+
+`npm run build` reads `PUBLIC_API_URL` from `frontend/.env`. Without an environment file, supply it explicitly:
+
+```sh
+PUBLIC_API_URL=http://localhost:3000 npm run build
+```
+
+After a successful build, start both production artifacts:
+
+```sh
+npm start
+```
+
+The individual production services are also available as `npm run start:backend` and `npm run start:frontend`. When starting one service with a non-default port, supply its `PORT` in that command's environment.
+
+## Project map
+
+```text
+backend/   NestJS application and Node Vitest tests
+frontend/  Astro server application, React island, and DOM Vitest tests
+shared/    Cross-application TypeScript contracts
+docs/      Product specification and accepted architecture decisions
+tasks/     Phase plan, checklist, progress, and verification evidence
+```
+
+## Continue the phased build
+
+Read `AGENTS.md`, `docs/specification.md`, `tasks/plan.md`, `tasks/todo.md`, and `tasks/progress.md`. The phrase **Proceed with the next step** authorizes only the current phase named in `tasks/progress.md`.
+
+## Branch and deployment boundary
+
+- `dev` is the GitHub default and routine implementation branch.
+- `releases` is reserved for explicitly approved production-quality revisions and will eventually be Railway's source branch.
+- `main` is the backup branch for accepted release state.
+
+Codex does not deploy the application or mutate Railway configuration. Owner-run deployment instructions are deferred until the locally verified release candidate reaches Phase 7.

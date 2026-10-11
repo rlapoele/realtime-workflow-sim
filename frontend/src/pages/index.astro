@@ -1,0 +1,27 @@
+---
+import { DashboardApp } from "../components/DashboardApp";
+import { resolvePublicApiUrl } from "../lib/api-url";
+import "../styles/global.css";
+
+const apiUrl = resolvePublicApiUrl({
+  configuredUrl: import.meta.env.PUBLIC_API_URL,
+  isDev: import.meta.env.DEV,
+});
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta
+      name="description"
+      content="A fictional service-desk workflow execution simulation."
+    />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <title>AgentFlow Live</title>
+  </head>
+  <body>
+    <DashboardApp apiUrl={apiUrl} client:load />
+  </body>
+</html>
