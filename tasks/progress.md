@@ -4,7 +4,7 @@ This file is the single source of truth for which phase **Proceed with the next 
 
 ## Current phase
 
-- Phase: **1 — Compatible foundation and shared contracts**
+- Phase: **2 — Workflow catalogue vertical slice**
 - Status: **ready**
 - Last updated: **2026-10-11**
 - Blocker: none
@@ -13,9 +13,9 @@ This file is the single source of truth for which phase **Proceed with the next 
 
 | Phase | State | Evidence | Review |
 |---|---|---|---|
-| Planning | complete | Current planning documents | Awaiting user review |
-| 1 — Compatible foundation and shared contracts | ready | — | — |
-| 2 — Workflow catalogue vertical slice | pending | — | — |
+| Planning | complete | Current planning documents | Accepted through Phase 1 authorization |
+| 1 — Compatible foundation and shared contracts | complete | `tasks/evidence/phase-1.md` | Awaiting user review |
+| 2 — Workflow catalogue vertical slice | ready | — | — |
 | 3 — Deterministic execution vertical slice | pending | — | — |
 | 4 — Sequenced real-time streaming and recovery | pending | — | — |
 | 5 — Production-quality responsive interface | pending | — | — |

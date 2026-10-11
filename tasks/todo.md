@@ -8,29 +8,29 @@ Only work on the phase marked current in `tasks/progress.md`. Check boxes requir
 
 **Tasks:**
 
-- [ ] Verify current official setup guidance and select mutually compatible stable versions.
-- [ ] Confirm the local repository has `dev`, `releases`, and `main` at the documented bootstrap revision, with `dev` checked out.
-- [ ] Create npm workspaces, root scripts, one lockfile, strict shared TypeScript contracts, and runtime-safe environment handling.
-- [ ] Scaffold minimal NestJS and Astro/React server applications, separate Vitest environments, Tailwind, Heroicons, TanStack Query, and shadcn configured for Base UI.
-- [ ] Add backend health endpoint and a minimal frontend shell/health indication sufficient to prove both production starts.
-- [ ] Add `.env.example` files and replace planning-only README commands with verified commands.
-- [ ] Record compatible versions and any significant setup decision.
+- [x] Verify current official setup guidance and select mutually compatible stable versions.
+- [x] Confirm the local repository has `dev`, `releases`, and `main` at the documented bootstrap revision, with `dev` checked out.
+- [x] Create npm workspaces, root scripts, one lockfile, strict shared TypeScript contracts, and runtime-safe environment handling.
+- [x] Scaffold minimal NestJS and Astro/React server applications, separate Vitest environments, Tailwind, Heroicons, TanStack Query, and shadcn configured for Base UI.
+- [x] Add backend health endpoint and a minimal frontend shell/health indication sufficient to prove both production starts.
+- [x] Add `.env.example` files and replace planning-only README commands with verified commands.
+- [x] Record compatible versions and any significant setup decision.
 
 **Acceptance criteria:**
 
-- [ ] One root install resolves with a committed lockfile and no duplicate shared contract definitions.
-- [ ] Routine implementation and phase commits remain on `dev`; neither `releases` nor `main` advances during Phase 1.
-- [ ] Both apps consume a type-only contract from `shared/types.ts` in typecheck and production build.
-- [ ] Root development, test, typecheck, build, and workspace start scripts are real and documented.
-- [ ] No product workflow behavior from later phases is implemented.
+- [x] One root install resolves with a committed lockfile and no duplicate shared contract definitions.
+- [x] Routine implementation and phase commits remain on `dev`; neither `releases` nor `main` advances during Phase 1.
+- [x] Both apps consume a type-only contract from `shared/types.ts` in typecheck and production build.
+- [x] Root development, test, typecheck, build, and workspace start scripts are real and documented.
+- [x] No product workflow behavior from later phases is implemented.
 
 **Verification:**
 
-- [ ] Clean root install succeeds.
-- [ ] Backend and frontend focused tests pass.
-- [ ] Both strict typechecks pass.
-- [ ] Both production builds pass.
-- [ ] Both production start commands bind to configured ports; backend `/health` responds.
+- [x] Clean root install succeeds.
+- [x] Backend and frontend focused tests pass.
+- [x] Both strict typechecks pass.
+- [x] Both production builds pass.
+- [x] Both production start commands bind to configured ports; backend `/health` responds.
 
 **Dependencies:** None.
 
