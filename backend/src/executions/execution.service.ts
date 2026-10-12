@@ -128,8 +128,8 @@ export class ExecutionService implements OnApplicationShutdown {
     execution.startedAt = this.timestamp();
     this.advanceSequence(execution);
 
-    for (const [index, instruction] of script.entries()) {
-      const step = execution.steps[index];
+    for (const instruction of script) {
+      const step = execution.steps.find((item) => item.stepId === instruction.stepId);
       if (step === undefined) return;
 
       step.status = "running";
@@ -152,7 +152,7 @@ export class ExecutionService implements OnApplicationShutdown {
         execution.failureReason = failureReason;
         execution.completedAt = this.timestamp();
         this.advanceSequence(execution);
-        this.skipRemainingSteps(execution, index + 1);
+        this.skipPendingSteps(execution);
         this.retainCompleted(execution.id);
         return;
       }
@@ -170,8 +170,8 @@ export class ExecutionService implements OnApplicationShutdown {
     this.retainCompleted(execution.id);
   }
 
-  private skipRemainingSteps(execution: MutableExecution, startIndex: number): void {
-    for (const step of execution.steps.slice(startIndex)) {
+  private skipPendingSteps(execution: MutableExecution): void {
+    for (const step of execution.steps.filter((item) => item.status === "pending")) {
       step.status = "skipped";
       step.completedAt = this.timestamp();
       this.advanceSequence(execution);
