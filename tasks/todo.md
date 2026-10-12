@@ -40,26 +40,26 @@ Only work on the phase marked current in `tasks/progress.md`. Check boxes requir
 
 **Tasks:**
 
-- [ ] Define the seed runtime schema and public mapping without weakening shared contracts.
-- [ ] Add exactly four required JSON seeds and startup loading with actionable filename errors.
-- [ ] Implement `GET /workflows` and its consistent error/runtime validation boundaries.
-- [ ] Build the TanStack Query catalogue UI with selection, request context, scenario indicator, and ordered pending steps.
-- [ ] Add seed, loader, API, and catalogue component tests, including invalid and duplicate cases.
+- [x] Define the seed runtime schema and public mapping without weakening shared contracts.
+- [x] Add exactly four required JSON seeds and startup loading with actionable filename errors.
+- [x] Implement `GET /workflows` and its consistent error/runtime validation boundaries.
+- [x] Build the TanStack Query catalogue UI with selection, request context, scenario indicator, and ordered pending steps.
+- [x] Add seed, loader, API, and catalogue component tests, including invalid and duplicate cases.
 
 **Acceptance criteria:**
 
-- [ ] JSON is the only authored source for scenario-specific definitions/scripts.
-- [ ] All four workflows render from API data with loading, empty, and error handling.
-- [ ] Private simulation scripts are absent from public responses.
-- [ ] Fresh immutable/public objects prevent consumer mutation of seed state.
+- [x] JSON is the only authored source for scenario-specific definitions/scripts.
+- [x] All four workflows render from API data with loading, empty, and error handling.
+- [x] Private simulation scripts are absent from public responses.
+- [x] Fresh immutable/public objects prevent consumer mutation of seed state.
 
 **Verification:**
 
-- [ ] Loader tests cover all specified invalid cases and four valid files.
-- [ ] Backend API and frontend catalogue tests pass.
-- [ ] Typechecks and builds pass.
-- [ ] Built backend loads seed assets when started from a different working directory.
-- [ ] Browser check confirms all four examples and no page-level mobile overflow.
+- [x] Loader tests cover all specified invalid cases and four valid files.
+- [x] Backend API and frontend catalogue tests pass.
+- [x] Typechecks and builds pass.
+- [x] Built backend loads seed assets when started from a different working directory.
+- [x] Browser check confirms all four examples and no page-level mobile overflow.
 
 **Dependencies:** Phase 1.
 

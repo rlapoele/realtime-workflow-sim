@@ -4,9 +4,9 @@ This file is the single source of truth for which phase **Proceed with the next 
 
 ## Current phase
 
-- Phase: **2 — Workflow catalogue vertical slice**
+- Phase: **3 — Deterministic execution vertical slice**
 - Status: **ready**
-- Last updated: **2026-10-11**
+- Last updated: **2026-10-12**
 - Blocker: none
 
 ## Phase ledger
@@ -14,9 +14,9 @@ This file is the single source of truth for which phase **Proceed with the next 
 | Phase | State | Evidence | Review |
 |---|---|---|---|
 | Planning | complete | Current planning documents | Accepted through Phase 1 authorization |
-| 1 — Compatible foundation and shared contracts | complete | `tasks/evidence/phase-1.md` | Awaiting user review |
-| 2 — Workflow catalogue vertical slice | ready | — | — |
-| 3 — Deterministic execution vertical slice | pending | — | — |
+| 1 — Compatible foundation and shared contracts | complete | `tasks/evidence/phase-1.md` | Reviewed through Phase 2 authorization |
+| 2 — Workflow catalogue vertical slice | complete | `tasks/evidence/phase-2.md` | Awaiting user review |
+| 3 — Deterministic execution vertical slice | ready | — | — |
 | 4 — Sequenced real-time streaming and recovery | pending | — | — |
 | 5 — Production-quality responsive interface | pending | — | — |
 | 6 — Hardening and release-candidate verification | pending | — | — |
