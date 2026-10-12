@@ -3,8 +3,11 @@ import { METHOD_METADATA, PATH_METADATA } from "@nestjs/common/constants";
 import { Test } from "@nestjs/testing";
 import { describe, expect, it } from "vitest";
 
+import { ExecutionService } from "../src/executions/execution.service.js";
 import { WorkflowsController } from "../src/workflows/workflows.controller.js";
 import { WorkflowCatalogueService } from "../src/workflows/workflow-catalogue.service.js";
+
+const executionService = { trigger: () => undefined } as never;
 
 describe("workflow catalogue", () => {
   it("maps the public catalogue to GET /workflows", () => {
@@ -17,7 +20,10 @@ describe("workflow catalogue", () => {
   it("exposes four fresh public definitions without simulation scripts", async () => {
     const moduleRef = await Test.createTestingModule({
       controllers: [WorkflowsController],
-      providers: [WorkflowCatalogueService],
+      providers: [
+        WorkflowCatalogueService,
+        { provide: ExecutionService, useValue: executionService },
+      ],
     }).compile();
     const controller = moduleRef.get(WorkflowsController);
 
