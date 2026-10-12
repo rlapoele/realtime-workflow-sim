@@ -1,6 +1,6 @@
 # AgentFlow Live
 
-AgentFlow Live is a fictional service-desk workflow simulation delivered through reviewable phases. The current build provides a validated four-workflow catalogue served by NestJS and browsed through an Astro/React interface. Triggering and executing workflows remain intentionally unavailable until a later reviewed phase.
+AgentFlow Live is a fictional service-desk workflow simulation delivered through reviewable phases. The current build provides a validated four-workflow catalogue and deterministic in-memory executions through a NestJS API and Astro/React interface. It does not contact real systems.
 
 ## Prerequisites
 
@@ -49,7 +49,11 @@ Start both applications from the repository root:
 npm run dev
 ```
 
-Then open [http://localhost:4321](http://localhost:4321). Browse each fictional workflow with the **Workflow** selector. The backend health endpoint is [http://localhost:3000/health](http://localhost:3000/health), and the public catalogue is [http://localhost:3000/workflows](http://localhost:3000/workflows).
+Then open [http://localhost:4321](http://localhost:4321). Choose a fictional workflow and select **Run workflow**. Active runs disable workflow switching; terminal runs expose **Run again**. The execution ID is stored in the page URL, so refreshing restores retained state from the API.
+
+The backend health endpoint is [http://localhost:3000/health](http://localhost:3000/health), and the public catalogue is [http://localhost:3000/workflows](http://localhost:3000/workflows). `POST /workflows/:workflowId/trigger` creates a new execution on every request and is therefore not safe to retry as an idempotent operation. `GET /executions/:executionId` returns its current authoritative snapshot.
+
+Execution data is process-local: restarting the backend clears it. The interface detects an expired or missing execution and offers a new-run recovery action. Completed history is capped at 50 runs and accumulated logs at 64,000 characters per execution; active runs are never removed by retention.
 
 The root process stops both applications when you press `Ctrl+C`.
 

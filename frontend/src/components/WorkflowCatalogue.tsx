@@ -161,11 +161,12 @@ export function WorkflowCatalogue({ apiUrl }: WorkflowCatalogueProps) {
   const active = isActive(shownExecution);
   const missingExecution =
     executionQuery.error instanceof ExecutionApiError && executionQuery.error.status === 404;
-  const buttonLabel = active
+  const terminalButtonLabel = active
     ? "Workflow running"
     : shownExecution === undefined
       ? "Run workflow"
       : "Run again";
+  const buttonLabel = triggerMutation.isPending ? "Starting workflow" : terminalButtonLabel;
 
   return (
     <>
@@ -187,7 +188,7 @@ export function WorkflowCatalogue({ apiUrl }: WorkflowCatalogueProps) {
           type="button"
         >
           <PlayIcon aria-hidden="true" className="size-4" />
-          {triggerMutation.isPending ? "Starting…" : buttonLabel}
+          {triggerMutation.isPending ? "Starting…" : terminalButtonLabel}
         </button>
         <div className="rounded-lg bg-[var(--accent)] px-4 py-2.5 text-sm text-emerald-900 sm:max-w-xs">
           Simulation only. No external systems are contacted.

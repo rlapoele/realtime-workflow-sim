@@ -69,25 +69,25 @@ Only work on the phase marked current in `tasks/progress.md`. Check boxes requir
 
 **Tasks:**
 
-- [ ] Implement injectable-clock/timing execution state, generic sequential scripts, concurrency, and shutdown cleanup.
-- [ ] Implement `POST /workflows/:workflowId/trigger` and `GET /executions/:executionId` with 202/404 contracts.
-- [ ] Implement bounded logs and completed-run retention without evicting active runs.
-- [ ] Connect frontend mutation, execution-specific query, URL execution ID, disabled active controls, restart/expiry recovery, and terminal restart affordances.
-- [ ] Add fake-timer tests for success, failure/skipping, isolation, concurrency, retention, and cleanup.
+- [x] Implement injectable-clock/timing execution state, generic sequential scripts, concurrency, and shutdown cleanup.
+- [x] Implement `POST /workflows/:workflowId/trigger` and `GET /executions/:executionId` with 202/404 contracts.
+- [x] Implement bounded logs and completed-run retention without evicting active runs.
+- [x] Connect frontend mutation, execution-specific query, URL execution ID, disabled active controls, restart/expiry recovery, and terminal restart affordances.
+- [x] Add fake-timer tests for success, failure/skipping, isolation, concurrency, retention, and cleanup.
 
 **Acceptance criteria:**
 
-- [ ] Three scenarios succeed and `app-access` fails at step 4 with step 5 skipped.
-- [ ] Every trigger owns fresh request, step, and log state; seeds remain unchanged.
-- [ ] URL refresh restores retained authoritative state, and missing state has a clear recovery action.
-- [ ] The UI never implies a real integration or interactive approval.
+- [x] Three scenarios succeed and `app-access` fails at step 4 with step 5 skipped.
+- [x] Every trigger owns fresh request, step, and log state; seeds remain unchanged.
+- [x] URL refresh restores retained authoritative state, and missing state has a clear recovery action.
+- [x] The UI never implies a real integration or interactive approval.
 
 **Verification:**
 
-- [ ] Engine and API tests pass under fake timers.
-- [ ] Frontend trigger/restore/error tests pass.
-- [ ] Typechecks and builds pass.
-- [ ] Browser check runs one success and the failure to terminal state using authoritative GET data.
+- [x] Engine and API tests pass under fake timers.
+- [x] Frontend trigger/restore/error tests pass.
+- [x] Typechecks and builds pass.
+- [x] Browser check runs one success and the failure to terminal state using authoritative GET data.
 
 **Dependencies:** Phase 2.
 
