@@ -32,7 +32,8 @@ function DashboardShell({ apiUrl }: DashboardAppProps) {
             Workflow executions
           </h1>
           <p className="mt-3 max-w-3xl leading-7 text-[var(--muted-foreground)]">
-            Explore four fictional service workflows and their request context. Execution is not available in this catalogue phase.
+            Run fictional service workflows locally and inspect their deterministic execution state.
+            No external systems are connected.
           </p>
           <div className="mt-8">
             <WorkflowCatalogue apiUrl={apiUrl} />

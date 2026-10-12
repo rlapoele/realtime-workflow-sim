@@ -4,7 +4,7 @@ import { describe, expect, it, vi } from "vitest";
 import { DashboardApp } from "../src/components/DashboardApp";
 
 describe("DashboardApp", () => {
-  it("shows the simulation shell without implying execution behavior", async () => {
+  it("shows the simulation shell and does not expose a run without a workflow", async () => {
     vi.stubGlobal(
       "fetch",
       vi.fn().mockResolvedValue(

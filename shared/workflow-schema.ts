@@ -93,7 +93,7 @@ function parseSubject(value: unknown, path: string): RequestSubject {
   };
 }
 
-function parseRequest(value: unknown, path: string): RequestContext {
+export function parseRequestContext(value: unknown, path: string): RequestContext {
   const source = record(value, path);
   const priority = source.priority;
   if (priority !== "normal" && priority !== "high") {
@@ -170,7 +170,7 @@ export function parseWorkflowDefinition(
     triggerDescription: string(source.triggerDescription, `${path}.triggerDescription`),
     systemIds,
     expectedScenario: scenario,
-    request: parseRequest(source.request, `${path}.request`),
+    request: parseRequestContext(source.request, `${path}.request`),
     steps,
   };
 }

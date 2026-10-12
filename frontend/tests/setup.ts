@@ -5,6 +5,7 @@ import { afterEach, vi } from "vitest";
 
 afterEach(() => {
   cleanup();
+  window.history.replaceState(null, "", "/");
   vi.clearAllMocks();
   vi.unstubAllGlobals();
 });
