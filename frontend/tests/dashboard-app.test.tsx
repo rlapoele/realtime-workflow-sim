@@ -4,21 +4,19 @@ import { describe, expect, it, vi } from "vitest";
 import { DashboardApp } from "../src/components/DashboardApp";
 
 describe("DashboardApp", () => {
-  it("shows backend health without implying workflow behavior", async () => {
+  it("shows the simulation shell without implying execution behavior", async () => {
     vi.stubGlobal(
       "fetch",
       vi.fn().mockResolvedValue(
-        new Response(
-          JSON.stringify({ service: "agentflow-backend", status: "ok" }),
-          { headers: { "Content-Type": "application/json" } },
-        ),
+        new Response(JSON.stringify([]), { headers: { "Content-Type": "application/json" } }),
       ),
     );
 
     render(<DashboardApp apiUrl="http://localhost:3000" />);
 
     expect(screen.getByRole("heading", { name: "Workflow executions" })).toBeVisible();
-    expect(await screen.findByText("Backend available")).toBeVisible();
-    expect(fetch).toHaveBeenCalledWith("http://localhost:3000/health");
+    expect(await screen.findByText("No workflows are available.")).toBeVisible();
+    expect(screen.queryByRole("button", { name: /run workflow/i })).not.toBeInTheDocument();
+    expect(fetch).toHaveBeenCalledWith("http://localhost:3000/workflows");
   });
 });

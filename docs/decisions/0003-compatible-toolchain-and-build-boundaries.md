@@ -27,6 +27,8 @@ TypeScript 7.0.2 was evaluated and rejected because Astro Check 0.9.10 declares 
 
 Keep `shared/types.ts` outside both workspaces as the only cross-application contract source. Each application must import at least one shared type directly. The backend compiler uses the repository root as its source root, so its build emits both backend code and shared declarations beneath `backend/dist/`. The Astro/Vite build consumes the same source through a type-only import.
 
+Phase 2 adds a pure runtime workflow parser beside the shared types so both the backend seed boundary and frontend HTTP boundary enforce the same public contract. The root package is explicitly ESM so executable shared modules emit in the same format as the backend. The backend build copies validated JSON-authored workflow seeds into `backend/dist/backend/seeds/workflows`; runtime resolution is relative to the compiled module rather than the process working directory.
+
 Use Astro server output with the official Node standalone adapter. `PUBLIC_API_URL` is a Vite/Astro build-time value: local development may use the documented localhost fallback, but production mode validates that an explicit value exists before building. Both production start scripts read optional workspace `.env` files through Node and respect runtime `PORT`; the backend and frontend bind to `0.0.0.0`.
 
 Astro 7 automatically backgrounds its development server when it detects an AI coding agent. The frontend development script explicitly opts out with `ASTRO_DEV_BACKGROUND=0` so the root process owns both child services and `Ctrl+C` stops them together.
@@ -57,6 +59,7 @@ The official manual setup only requires configuration and runtime dependencies. 
 - Production builds prove both applications can consume root shared contracts.
 - Frontend production configuration fails early when its public API URL is absent.
 - Railway services can later use workspace build/start commands while retaining repository-root build context.
+- The built backend owns a copied seed asset set and can start from any working directory.
 - Generated shadcn component changes must be reviewed for the Heroicons-only application policy.
 
 ## References
@@ -67,3 +70,6 @@ The official manual setup only requires configuration and runtime dependencies. 
 - [NestJS first steps](https://docs.nestjs.com/first-steps)
 - [shadcn manual installation](https://ui.shadcn.com/docs/installation/manual)
 - [shadcn configuration](https://ui.shadcn.com/docs/components-json)
+- [shadcn Base UI Select](https://ui.shadcn.com/docs/components/base/select)
+- [Base UI Select](https://base-ui.com/react/components/select)
+- [TanStack Query `useQuery`](https://tanstack.com/query/latest/docs/framework/react/reference/functions/useQuery)

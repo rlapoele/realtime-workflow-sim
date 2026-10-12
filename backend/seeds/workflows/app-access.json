@@ -1,0 +1,121 @@
+{
+  "schemaVersion": 1,
+  "definition": {
+    "id": "app-access",
+    "name": "Application access",
+    "description": "Qualify, approve, and provision a fictional application access request.",
+    "category": "IT access",
+    "triggerDescription": "Manual request from a simulated Slack channel",
+    "systemIds": ["request-intake", "policy", "approval", "identity", "notification"],
+    "expectedScenario": "failure",
+    "request": {
+      "subject": {
+        "id": "person-nora-martin",
+        "name": "Nora Martin",
+        "initials": "NM",
+        "role": "Product Designer",
+        "department": "Design",
+        "manager": "Camille Roux"
+      },
+      "source": "Slack request (simulated)",
+      "priority": "normal",
+      "details": {
+        "application": "Figma",
+        "accessLevel": "Editor",
+        "businessReason": "Contribute to the shared product design workspace"
+      }
+    },
+    "steps": [
+      {
+        "id": "qualify-context",
+        "name": "Qualify request",
+        "description": "Review the fictional requester, application, and access level.",
+        "systemId": "request-intake",
+        "actionLabel": "Review context"
+      },
+      {
+        "id": "check-policy",
+        "name": "Check access policy",
+        "description": "Compare the request with the simulated role and access policy.",
+        "systemId": "policy",
+        "actionLabel": "Check policy"
+      },
+      {
+        "id": "simulate-approval",
+        "name": "Record approval",
+        "description": "Simulate manager approval for the requested access.",
+        "systemId": "approval",
+        "actionLabel": "Simulate approval"
+      },
+      {
+        "id": "provision-access",
+        "name": "Provision application access",
+        "description": "Simulate adding the requester to the appropriate Okta group.",
+        "systemId": "identity",
+        "actionLabel": "Simulate provisioning"
+      },
+      {
+        "id": "notify-resolve",
+        "name": "Notify and resolve",
+        "description": "Prepare a fictional completion message and resolve the request.",
+        "systemId": "notification",
+        "actionLabel": "Prepare resolution"
+      }
+    ]
+  },
+  "simulation": {
+    "steps": [
+      {
+        "stepId": "qualify-context",
+        "durationMs": 3000,
+        "logs": [
+          "Loaded Nora Martin's fictional request context.",
+          "Confirmed the requested Figma Editor access and business reason."
+        ],
+        "outcome": "success",
+        "resultSummary": "Request context qualified."
+      },
+      {
+        "stepId": "check-policy",
+        "durationMs": 3000,
+        "logs": [
+          "Checked the simulated Product Designer access profile.",
+          "Editor access is eligible for manager approval."
+        ],
+        "outcome": "success",
+        "resultSummary": "Policy requirements satisfied."
+      },
+      {
+        "stepId": "simulate-approval",
+        "durationMs": 3000,
+        "logs": [
+          "Prepared a simulated approval request for Camille Roux.",
+          "Recorded fictional manager approval."
+        ],
+        "outcome": "success",
+        "resultSummary": "Manager approval simulated."
+      },
+      {
+        "stepId": "provision-access",
+        "durationMs": 3000,
+        "logs": [
+          "Located the fictional Okta group for Figma Editor access.",
+          "Provisioning stopped: no simulated Editor licenses remain.",
+          "Manual follow-up is required to review license capacity."
+        ],
+        "outcome": "failed",
+        "failureReason": "No simulated Figma Editor licenses remain; manual follow-up is required."
+      },
+      {
+        "stepId": "notify-resolve",
+        "durationMs": 3000,
+        "logs": [
+          "Prepared a fictional completion message.",
+          "Marked the simulated request resolved."
+        ],
+        "outcome": "success",
+        "resultSummary": "Requester notification prepared."
+      }
+    ]
+  }
+}

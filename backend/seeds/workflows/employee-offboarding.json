@@ -1,0 +1,120 @@
+{
+  "schemaVersion": 1,
+  "definition": {
+    "id": "employee-offboarding",
+    "name": "Employee offboarding",
+    "description": "Coordinate fictional access suspension, asset return, and manager notification.",
+    "category": "Employee lifecycle",
+    "triggerDescription": "Simulated HRIS end-date event",
+    "systemIds": ["hris", "identity", "applications", "device", "notification"],
+    "expectedScenario": "success",
+    "request": {
+      "subject": {
+        "id": "person-maya-patel",
+        "name": "Maya Patel",
+        "initials": "MP",
+        "role": "Operations Coordinator",
+        "department": "Operations",
+        "manager": "Sam Rivera"
+      },
+      "source": "HRIS end-date event (simulated)",
+      "priority": "high",
+      "details": {
+        "endDate": "2026-11-14",
+        "asset": "Standard laptop",
+        "handoffOwner": "Sam Rivera"
+      }
+    },
+    "steps": [
+      {
+        "id": "load-checklist",
+        "name": "Load checklist and assets",
+        "description": "Load the fictional departure context and assigned asset record.",
+        "systemId": "hris",
+        "actionLabel": "Load checklist"
+      },
+      {
+        "id": "suspend-identity",
+        "name": "Suspend identity and sessions",
+        "description": "Simulate suspending the account and revoking active sessions.",
+        "systemId": "identity",
+        "actionLabel": "Simulate suspension"
+      },
+      {
+        "id": "remove-app-access",
+        "name": "Remove application access",
+        "description": "Simulate removing the standard Operations application set.",
+        "systemId": "applications",
+        "actionLabel": "Remove access"
+      },
+      {
+        "id": "prepare-device-return",
+        "name": "Prepare device return",
+        "description": "Prepare a fictional return record for the assigned laptop.",
+        "systemId": "device",
+        "actionLabel": "Prepare return"
+      },
+      {
+        "id": "notify-manager",
+        "name": "Notify manager and complete",
+        "description": "Prepare a fictional completion summary for the manager.",
+        "systemId": "notification",
+        "actionLabel": "Prepare completion"
+      }
+    ]
+  },
+  "simulation": {
+    "steps": [
+      {
+        "stepId": "load-checklist",
+        "durationMs": 3000,
+        "logs": [
+          "Loaded Maya Patel's fictional departure checklist.",
+          "Matched the assigned standard laptop record."
+        ],
+        "outcome": "success",
+        "resultSummary": "Checklist and asset context loaded."
+      },
+      {
+        "stepId": "suspend-identity",
+        "durationMs": 3000,
+        "logs": [
+          "Simulated suspending the employee identity.",
+          "Recorded fictional session revocation."
+        ],
+        "outcome": "success",
+        "resultSummary": "Identity and sessions suspended."
+      },
+      {
+        "stepId": "remove-app-access",
+        "durationMs": 3000,
+        "logs": [
+          "Loaded the simulated Operations application assignments.",
+          "Recorded fictional access removal."
+        ],
+        "outcome": "success",
+        "resultSummary": "Application access removed."
+      },
+      {
+        "stepId": "prepare-device-return",
+        "durationMs": 3000,
+        "logs": [
+          "Prepared a fictional laptop return record.",
+          "Assigned the simulated return handoff to the manager."
+        ],
+        "outcome": "success",
+        "resultSummary": "Device return prepared."
+      },
+      {
+        "stepId": "notify-manager",
+        "durationMs": 3000,
+        "logs": [
+          "Prepared a fictional completion summary for Sam Rivera.",
+          "Marked the simulated offboarding checklist complete."
+        ],
+        "outcome": "success",
+        "resultSummary": "Manager completion summary prepared."
+      }
+    ]
+  }
+}

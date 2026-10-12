@@ -1,6 +1,6 @@
 # AgentFlow Live
 
-AgentFlow Live is a fictional service-desk workflow simulation delivered through reviewable phases. Phase 1 provides the strict-TypeScript npm workspace, shared contracts, NestJS health API, and Astro/React application shell. Workflow catalogue and execution behavior are intentionally not implemented yet.
+AgentFlow Live is a fictional service-desk workflow simulation delivered through reviewable phases. The current build provides a validated four-workflow catalogue served by NestJS and browsed through an Astro/React interface. Triggering and executing workflows remain intentionally unavailable until a later reviewed phase.
 
 ## Prerequisites
 
@@ -49,13 +49,13 @@ Start both applications from the repository root:
 npm run dev
 ```
 
-Then open [http://localhost:4321](http://localhost:4321). The backend health endpoint is [http://localhost:3000/health](http://localhost:3000/health).
+Then open [http://localhost:4321](http://localhost:4321). Browse each fictional workflow with the **Workflow** selector. The backend health endpoint is [http://localhost:3000/health](http://localhost:3000/health), and the public catalogue is [http://localhost:3000/workflows](http://localhost:3000/workflows).
 
 The root process stops both applications when you press `Ctrl+C`.
 
 ## Verification
 
-Run the automated Phase 1 checks:
+Run the automated checks:
 
 ```sh
 npm run test

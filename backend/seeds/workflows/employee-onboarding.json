@@ -1,0 +1,120 @@
+{
+  "schemaVersion": 1,
+  "definition": {
+    "id": "employee-onboarding",
+    "name": "Employee onboarding",
+    "description": "Prepare fictional identity, device, and application access for a new starter.",
+    "category": "Employee lifecycle",
+    "triggerDescription": "Simulated HRIS start-date event",
+    "systemIds": ["hris", "identity", "device", "applications", "notification"],
+    "expectedScenario": "success",
+    "request": {
+      "subject": {
+        "id": "person-alex-chen",
+        "name": "Alex Chen",
+        "initials": "AC",
+        "role": "Frontend Engineer",
+        "department": "Engineering",
+        "manager": "Morgan Lee"
+      },
+      "source": "HRIS start-date event (simulated)",
+      "priority": "normal",
+      "details": {
+        "startDate": "2026-11-03",
+        "location": "Paris",
+        "deviceProfile": "Standard engineering laptop"
+      }
+    },
+    "steps": [
+      {
+        "id": "load-requirements",
+        "name": "Load starter requirements",
+        "description": "Load the fictional role, department, and start-date context.",
+        "systemId": "hris",
+        "actionLabel": "Load requirements"
+      },
+      {
+        "id": "prepare-identity",
+        "name": "Prepare identity and groups",
+        "description": "Simulate creating an identity and standard team memberships.",
+        "systemId": "identity",
+        "actionLabel": "Prepare identity"
+      },
+      {
+        "id": "reserve-device",
+        "name": "Reserve laptop",
+        "description": "Reserve a fictional laptop matching the starter profile.",
+        "systemId": "device",
+        "actionLabel": "Reserve device"
+      },
+      {
+        "id": "assign-applications",
+        "name": "Assign standard applications",
+        "description": "Simulate assigning the approved Engineering application set.",
+        "systemId": "applications",
+        "actionLabel": "Assign applications"
+      },
+      {
+        "id": "prepare-welcome",
+        "name": "Prepare welcome and resolve",
+        "description": "Prepare a fictional welcome summary for the manager and starter.",
+        "systemId": "notification",
+        "actionLabel": "Prepare welcome"
+      }
+    ]
+  },
+  "simulation": {
+    "steps": [
+      {
+        "stepId": "load-requirements",
+        "durationMs": 3000,
+        "logs": [
+          "Loaded Alex Chen's fictional starter profile.",
+          "Matched the Frontend Engineer requirements for Engineering."
+        ],
+        "outcome": "success",
+        "resultSummary": "Starter requirements loaded."
+      },
+      {
+        "stepId": "prepare-identity",
+        "durationMs": 3000,
+        "logs": [
+          "Prepared a simulated employee identity.",
+          "Assigned fictional Engineering group memberships."
+        ],
+        "outcome": "success",
+        "resultSummary": "Identity and groups prepared."
+      },
+      {
+        "stepId": "reserve-device",
+        "durationMs": 3000,
+        "logs": [
+          "Checked fictional laptop inventory.",
+          "Reserved a standard engineering laptop for the start date."
+        ],
+        "outcome": "success",
+        "resultSummary": "Laptop reserved."
+      },
+      {
+        "stepId": "assign-applications",
+        "durationMs": 3000,
+        "logs": [
+          "Loaded the simulated Engineering application bundle.",
+          "Recorded fictional application assignments."
+        ],
+        "outcome": "success",
+        "resultSummary": "Standard applications assigned."
+      },
+      {
+        "stepId": "prepare-welcome",
+        "durationMs": 3000,
+        "logs": [
+          "Prepared a fictional welcome summary for Morgan Lee.",
+          "Marked the simulated onboarding request ready."
+        ],
+        "outcome": "success",
+        "resultSummary": "Welcome summary prepared."
+      }
+    ]
+  }
+}
