@@ -97,26 +97,26 @@ Only work on the phase marked current in `tasks/progress.md`. Check boxes requir
 
 **Tasks:**
 
-- [ ] Implement named discriminated SSE events, per-execution sequence IDs, heartbeats, filtered multicast subscriptions, and snapshot-first race-safe ordering.
-- [ ] Complete streams only after pending text and terminal state; release subscriptions without cancelling runs.
-- [ ] Implement `useWorkflowStream` with execution-scoped keys, direct/batched log cache deltas, targeted status invalidation, sequence reducer, gap recovery, stale-response protection, and cleanup.
-- [ ] Expose accurate connection states and preserve per-step logs through refetch.
-- [ ] Add adversarial backend/frontend tests for ordering, duplicate/old/gap events, stale HTTP, Strict Mode, cleanup, and terminal flush.
+- [x] Implement named discriminated SSE events, per-execution sequence IDs, heartbeats, filtered multicast subscriptions, and snapshot-first race-safe ordering.
+- [x] Complete streams only after pending text and terminal state; release subscriptions without cancelling runs.
+- [x] Implement `useWorkflowStream` with execution-scoped keys, direct/batched log cache deltas, targeted status invalidation, sequence reducer, gap recovery, stale-response protection, and cleanup.
+- [x] Expose accurate connection states and preserve per-step logs through refetch.
+- [x] Add adversarial backend/frontend tests for ordering, duplicate/old/gap events, stale HTTP, Strict Mode, cleanup, and terminal flush.
 
 **Acceptance criteria:**
 
-- [ ] Logs appear progressively and exactly once.
-- [ ] Refresh/reconnect converges to authoritative state without historical chunk replay.
-- [ ] A sequence gap forces snapshot recovery before newer deltas apply.
-- [ ] Heartbeats do not refetch; text chunks do not cause per-chunk GET requests.
-- [ ] Unmount, ID change, and completion close the stream and batching work.
+- [x] Logs appear progressively and exactly once.
+- [x] Refresh/reconnect converges to authoritative state without historical chunk replay.
+- [x] A sequence gap forces snapshot recovery before newer deltas apply.
+- [x] Heartbeats do not refetch; text chunks do not cause per-chunk GET requests.
+- [x] Unmount, ID change, and completion close the stream and batching work.
 
 **Verification:**
 
-- [ ] Event ordering and subscription-race tests pass.
-- [ ] Frontend reducer/hook lifecycle tests pass.
-- [ ] Typechecks and builds pass.
-- [ ] Browser checks cover mid-run refresh and a simulated connectivity interruption/recovery.
+- [x] Event ordering and subscription-race tests pass.
+- [x] Frontend reducer/hook lifecycle tests pass.
+- [x] Typechecks and builds pass.
+- [x] Browser checks cover mid-run refresh and a simulated connectivity interruption/recovery.
 
 **Dependencies:** Phase 3.
 

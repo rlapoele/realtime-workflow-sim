@@ -20,6 +20,7 @@ import type {
   WorkflowDefinition,
   WorkflowExecution,
 } from "../../../shared/types";
+import type { ConnectionState } from "../hooks/useWorkflowStream";
 
 const systemIcons = {
   applications: Squares2X2Icon,
@@ -55,7 +56,13 @@ function formatDetail(value: JsonValue): string {
   return String(value);
 }
 
-function ExecutionSummary({ execution }: { readonly execution: WorkflowExecution }) {
+function ExecutionSummary({
+  connectionState,
+  execution,
+}: {
+  readonly connectionState: ConnectionState;
+  readonly execution: WorkflowExecution;
+}) {
   const title = {
     pending: "Execution queued",
     running: "Execution running",
@@ -71,9 +78,10 @@ function ExecutionSummary({ execution }: { readonly execution: WorkflowExecution
     <div aria-live="polite" className={`mt-5 rounded-lg border px-4 py-3 ${tone}`} role="status">
       <div className="flex flex-wrap items-baseline justify-between gap-2">
         <p className="font-semibold">{title}</p>
-        <p className="text-xs font-medium text-[var(--muted-foreground)]">
-          Execution {execution.id}
-        </p>
+        <div className="text-right text-xs font-medium text-[var(--muted-foreground)]">
+          <p>Execution {execution.id}</p>
+          <p className="mt-1 capitalize">Connection: {connectionState}</p>
+        </div>
       </div>
       {execution.failureReason === undefined ? null : (
         <p className="mt-2 text-sm text-[var(--failure)]">{execution.failureReason}</p>
@@ -197,9 +205,11 @@ function RequestContextPanel({ request }: { readonly request: RequestContext }) 
 }
 
 export function WorkflowDetail({
+  connectionState,
   execution,
   workflow,
 }: {
+  readonly connectionState: ConnectionState;
   readonly execution: WorkflowExecution | undefined;
   readonly workflow: WorkflowDefinition;
 }) {
@@ -233,7 +243,9 @@ export function WorkflowDetail({
           <span className="font-semibold">Trigger:</span>{" "}
           <span className="text-[var(--muted-foreground)]">{workflow.triggerDescription}</span>
         </div>
-        {execution === undefined ? null : <ExecutionSummary execution={execution} />}
+        {execution === undefined ? null : (
+          <ExecutionSummary connectionState={connectionState} execution={execution} />
+        )}
         <h3 className="mt-7 text-sm font-bold uppercase tracking-[0.14em] text-[var(--muted-foreground)]">
           Workflow steps
         </h3>

@@ -4,6 +4,7 @@ import {
   METHOD_METADATA,
   PATH_METADATA,
 } from "@nestjs/common/constants";
+import { firstValueFrom, of } from "rxjs";
 import { describe, expect, it } from "vitest";
 
 import { ExecutionsController } from "../src/executions/executions.controller.js";
@@ -31,6 +32,12 @@ function serviceStub() {
       workflowId === execution.workflowId ? structuredClone(execution) : undefined,
     get: (executionId: string) =>
       executionId === execution.id ? structuredClone(execution) : undefined,
+    stream: (executionId: string) =>
+      executionId === execution.id
+        ? {
+            pipe: () => "stream",
+          }
+        : undefined,
   } as ExecutionService;
 }
 
@@ -55,6 +62,46 @@ describe("execution API", () => {
     expect(Reflect.getMetadata(PATH_METADATA, ExecutionsController.prototype.getExecution)).toBe(
       ":executionId",
     );
+  });
+
+  it("maps the execution stream to GET /workflows/stream", () => {
+    expect(Reflect.getMetadata(METHOD_METADATA, WorkflowsController.prototype.streamExecution)).toBe(
+      RequestMethod.GET,
+    );
+    expect(Reflect.getMetadata(PATH_METADATA, WorkflowsController.prototype.streamExecution)).toBe(
+      "stream",
+    );
+  });
+
+  it("serializes named SSE events with the execution sequence as the event ID", async () => {
+    const event = {
+      type: "log.delta" as const,
+      executionId: execution.id,
+      sequence: 4,
+      occurredAt: "2026-10-12T08:00:01.000Z",
+      stepId: "load-requirements",
+      delta: "Loaded.",
+    };
+    const service = {
+      ...serviceStub(),
+      stream: () => of(event),
+    } as unknown as ExecutionService;
+    const controller = new WorkflowsController({ listDefinitions: () => [] } as never, service);
+
+    await expect(firstValueFrom(controller.streamExecution(execution.id))).resolves.toEqual({
+      type: "log.delta",
+      id: "4",
+      data: event,
+    });
+  });
+
+  it("returns the shared 404 envelope before opening an unknown execution stream", () => {
+    const controller = new WorkflowsController(
+      { listDefinitions: () => [] } as never,
+      serviceStub(),
+    );
+
+    expect(() => controller.streamExecution("missing")).toThrow(HttpException);
   });
 
   it("returns fresh trigger and lookup contracts", () => {

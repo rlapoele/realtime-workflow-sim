@@ -84,6 +84,7 @@ export type ExecutionEvent =
   | (SequencedExecutionEvent & {
       readonly type: "execution.status";
       readonly status: ExecutionStatus;
+      readonly startedAt?: string;
       readonly completedAt?: string;
       readonly failureReason?: string;
     })

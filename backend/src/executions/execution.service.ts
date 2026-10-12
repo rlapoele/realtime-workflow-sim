@@ -1,8 +1,10 @@
 import { Inject, Injectable, type OnApplicationShutdown } from "@nestjs/common";
 import { randomUUID } from "node:crypto";
+import { interval, Observable, Subject, type Subscription } from "rxjs";
 
 import type {
   ExecutionStatus,
+  ExecutionEvent,
   RequestContext,
   StepExecution,
   StepStatus,
@@ -25,6 +27,7 @@ export interface ExecutionLimits {
 
 export const EXECUTION_RUNTIME = Symbol("EXECUTION_RUNTIME");
 export const EXECUTION_LIMITS = Symbol("EXECUTION_LIMITS");
+export const HEARTBEAT_INTERVAL_MS = 5_000;
 
 export const systemExecutionRuntime: ExecutionRuntime = {
   createId: () => randomUUID(),
@@ -65,6 +68,7 @@ interface MutableExecution {
 @Injectable()
 export class ExecutionService implements OnApplicationShutdown {
   private readonly executions = new Map<string, MutableExecution>();
+  private readonly eventSubjects = new Map<string, Subject<ExecutionEvent>>();
   private readonly completedIds: string[] = [];
   private readonly pendingTimers = new Map<unknown, (completed: boolean) => void>();
   private stopped = false;
@@ -97,6 +101,7 @@ export class ExecutionService implements OnApplicationShutdown {
       logCharacters: 0,
     };
     this.executions.set(execution.id, execution);
+    this.eventSubjects.set(execution.id, new Subject<ExecutionEvent>());
     void this.startWhenScheduled(execution, seed);
     return this.snapshot(execution);
   }
@@ -106,6 +111,65 @@ export class ExecutionService implements OnApplicationShutdown {
     return execution === undefined ? undefined : this.snapshot(execution);
   }
 
+  stream(executionId: string): Observable<ExecutionEvent> | undefined {
+    const execution = this.executions.get(executionId);
+    const subject = this.eventSubjects.get(executionId);
+    if (execution === undefined || subject === undefined) return undefined;
+
+    return new Observable<ExecutionEvent>((subscriber) => {
+      const initialSnapshot = this.snapshot(execution);
+      if (this.isTerminal(initialSnapshot.status)) {
+        subscriber.next({
+          type: "execution.snapshot",
+          executionId,
+          sequence: initialSnapshot.latestSequence,
+          occurredAt: this.timestamp(),
+          execution: initialSnapshot,
+        });
+        subscriber.complete();
+        return undefined;
+      }
+
+      const buffered: ExecutionEvent[] = [];
+      let initializing = true;
+      let heartbeatSubscription: Subscription | undefined;
+      const liveSubscription = subject.subscribe({
+        next: (event) => {
+          if (initializing) buffered.push(event);
+          else subscriber.next(event);
+        },
+        complete: () => subscriber.complete(),
+      });
+      const snapshot = this.snapshot(execution);
+      subscriber.next({
+        type: "execution.snapshot",
+        executionId,
+        sequence: snapshot.latestSequence,
+        occurredAt: this.timestamp(),
+        execution: snapshot,
+      });
+      initializing = false;
+      for (const event of buffered) {
+        if (event.type === "heartbeat" || event.sequence > snapshot.latestSequence) {
+          subscriber.next(event);
+        }
+      }
+
+      heartbeatSubscription = interval(HEARTBEAT_INTERVAL_MS).subscribe(() => {
+        subscriber.next({
+          type: "heartbeat",
+          executionId,
+          occurredAt: this.timestamp(),
+        });
+      });
+
+      return () => {
+        heartbeatSubscription?.unsubscribe();
+        liveSubscription.unsubscribe();
+      };
+    });
+  }
+
   onApplicationShutdown(): void {
     this.stopped = true;
     for (const [handle, resolve] of this.pendingTimers) {
@@ -113,6 +177,7 @@ export class ExecutionService implements OnApplicationShutdown {
       resolve(false);
     }
     this.pendingTimers.clear();
+    for (const subject of this.eventSubjects.values()) subject.complete();
   }
 
   private async startWhenScheduled(execution: MutableExecution, seed: WorkflowSeed): Promise<void> {
@@ -126,7 +191,11 @@ export class ExecutionService implements OnApplicationShutdown {
   ): Promise<void> {
     execution.status = "running";
     execution.startedAt = this.timestamp();
-    this.advanceSequence(execution);
+    this.emit(execution, {
+      type: "execution.status",
+      status: execution.status,
+      startedAt: execution.startedAt,
+    });
 
     for (const instruction of script) {
       const step = execution.steps.find((item) => item.stepId === instruction.stepId);
@@ -134,13 +203,24 @@ export class ExecutionService implements OnApplicationShutdown {
 
       step.status = "running";
       step.startedAt = this.timestamp();
-      this.advanceSequence(execution);
+      this.emit(execution, {
+        type: "step.status",
+        stepId: step.stepId,
+        status: step.status,
+        startedAt: step.startedAt,
+      });
 
       const chunkDuration = instruction.durationMs / instruction.logs.length;
       for (const log of instruction.logs) {
         if (!(await this.delay(chunkDuration))) return;
-        this.appendLog(execution, step, log);
-        this.advanceSequence(execution);
+        const delta = this.appendLog(execution, step, log);
+        if (delta !== "") {
+          this.emit(execution, {
+            type: "log.delta",
+            stepId: step.stepId,
+            delta,
+          });
+        }
       }
 
       step.completedAt = this.timestamp();
@@ -148,11 +228,24 @@ export class ExecutionService implements OnApplicationShutdown {
         const failureReason = instruction.failureReason ?? "Simulation step failed.";
         step.status = "failed";
         step.failureReason = failureReason;
+        this.emit(execution, {
+          type: "step.status",
+          stepId: step.stepId,
+          status: step.status,
+          completedAt: step.completedAt,
+          failureReason,
+        });
+        this.skipPendingSteps(execution);
         execution.status = "failed";
         execution.failureReason = failureReason;
         execution.completedAt = this.timestamp();
-        this.advanceSequence(execution);
-        this.skipPendingSteps(execution);
+        this.emit(execution, {
+          type: "execution.status",
+          status: execution.status,
+          completedAt: execution.completedAt,
+          failureReason,
+        });
+        this.completeStream(execution.id);
         this.retainCompleted(execution.id);
         return;
       }
@@ -161,12 +254,23 @@ export class ExecutionService implements OnApplicationShutdown {
       if (instruction.resultSummary !== undefined) {
         step.resultSummary = instruction.resultSummary;
       }
-      this.advanceSequence(execution);
+      this.emit(execution, {
+        type: "step.status",
+        stepId: step.stepId,
+        status: step.status,
+        completedAt: step.completedAt,
+        ...(step.resultSummary === undefined ? {} : { resultSummary: step.resultSummary }),
+      });
     }
 
     execution.status = "success";
     execution.completedAt = this.timestamp();
-    this.advanceSequence(execution);
+    this.emit(execution, {
+      type: "execution.status",
+      status: execution.status,
+      completedAt: execution.completedAt,
+    });
+    this.completeStream(execution.id);
     this.retainCompleted(execution.id);
   }
 
@@ -174,7 +278,12 @@ export class ExecutionService implements OnApplicationShutdown {
     for (const step of execution.steps.filter((item) => item.status === "pending")) {
       step.status = "skipped";
       step.completedAt = this.timestamp();
-      this.advanceSequence(execution);
+      this.emit(execution, {
+        type: "step.status",
+        stepId: step.stepId,
+        status: step.status,
+        completedAt: step.completedAt,
+      });
     }
   }
 
@@ -182,20 +291,24 @@ export class ExecutionService implements OnApplicationShutdown {
     execution: MutableExecution,
     step: MutableStepExecution,
     log: string,
-  ): void {
+  ): string {
     const prefix = step.logs === "" ? "" : "\n";
     const remaining = this.limits.maxLogCharacters - execution.logCharacters;
-    if (remaining <= 0) return;
+    if (remaining <= 0) return "";
     const addition = `${prefix}${log}`.slice(0, remaining);
     step.logs += addition;
     execution.logCharacters += addition.length;
+    return addition;
   }
 
   private retainCompleted(executionId: string): void {
     this.completedIds.push(executionId);
     while (this.completedIds.length > this.limits.maxCompletedExecutions) {
       const oldestId = this.completedIds.shift();
-      if (oldestId !== undefined) this.executions.delete(oldestId);
+      if (oldestId !== undefined) {
+        this.executions.delete(oldestId);
+        this.eventSubjects.delete(oldestId);
+      }
     }
   }
 
@@ -215,8 +328,28 @@ export class ExecutionService implements OnApplicationShutdown {
     return this.runtime.now().toISOString();
   }
 
-  private advanceSequence(execution: MutableExecution): void {
+  private emit(
+    execution: MutableExecution,
+    event:
+      | Omit<Extract<ExecutionEvent, { type: "execution.status" }>, "executionId" | "sequence" | "occurredAt">
+      | Omit<Extract<ExecutionEvent, { type: "step.status" }>, "executionId" | "sequence" | "occurredAt">
+      | Omit<Extract<ExecutionEvent, { type: "log.delta" }>, "executionId" | "sequence" | "occurredAt">,
+  ): void {
     execution.latestSequence += 1;
+    this.eventSubjects.get(execution.id)?.next({
+      ...event,
+      executionId: execution.id,
+      sequence: execution.latestSequence,
+      occurredAt: this.timestamp(),
+    } as Exclude<ExecutionEvent, { type: "execution.snapshot" | "heartbeat" }>);
+  }
+
+  private completeStream(executionId: string): void {
+    this.eventSubjects.get(executionId)?.complete();
+  }
+
+  private isTerminal(status: ExecutionStatus): boolean {
+    return status === "success" || status === "failed";
   }
 
   private snapshot(execution: MutableExecution): WorkflowExecution {

@@ -5,6 +5,7 @@ import {
   fetchExecution,
   triggerWorkflow,
 } from "../src/lib/executions";
+import { parseExecutionEvent } from "../../shared/execution-schema";
 
 const execution = {
   id: "execution-1",
@@ -73,5 +74,68 @@ describe("execution API client", () => {
     );
     expect(error).toBeInstanceOf(ExecutionApiError);
     expect(error).toMatchObject({ status: 404, code: "not_found" });
+  });
+});
+
+describe("execution event contract", () => {
+  it("parses named snapshot, status, log, and heartbeat events", () => {
+    expect(
+      parseExecutionEvent({
+        type: "execution.snapshot",
+        executionId: execution.id,
+        sequence: 0,
+        occurredAt: "2026-10-12T08:00:00.000Z",
+        execution,
+      }),
+    ).toMatchObject({ type: "execution.snapshot", sequence: 0 });
+    expect(
+      parseExecutionEvent({
+        type: "execution.status",
+        executionId: execution.id,
+        sequence: 1,
+        occurredAt: "2026-10-12T08:00:00.000Z",
+        status: "running",
+        startedAt: "2026-10-12T08:00:00.000Z",
+      }),
+    ).toMatchObject({ type: "execution.status", status: "running" });
+    expect(
+      parseExecutionEvent({
+        type: "log.delta",
+        executionId: execution.id,
+        sequence: 2,
+        occurredAt: "2026-10-12T08:00:01.000Z",
+        stepId: "load-requirements",
+        delta: "Loaded.",
+      }),
+    ).toMatchObject({ type: "log.delta", delta: "Loaded." });
+    expect(
+      parseExecutionEvent({
+        type: "heartbeat",
+        executionId: execution.id,
+        occurredAt: "2026-10-12T08:00:05.000Z",
+      }),
+    ).toMatchObject({ type: "heartbeat" });
+  });
+
+  it("rejects malformed and mismatched snapshot events", () => {
+    expect(() =>
+      parseExecutionEvent({
+        type: "log.delta",
+        executionId: execution.id,
+        sequence: 2.5,
+        occurredAt: "2026-10-12T08:00:01.000Z",
+        stepId: "load-requirements",
+        delta: "Loaded.",
+      }),
+    ).toThrow("sequence");
+    expect(() =>
+      parseExecutionEvent({
+        type: "execution.snapshot",
+        executionId: "different-execution",
+        sequence: 0,
+        occurredAt: "2026-10-12T08:00:00.000Z",
+        execution,
+      }),
+    ).toThrow("executionId");
   });
 });

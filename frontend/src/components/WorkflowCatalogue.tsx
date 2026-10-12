@@ -8,6 +8,11 @@ import {
   fetchExecution,
   triggerWorkflow,
 } from "../lib/executions";
+import {
+  executionQueryKey,
+  preferNewerExecution,
+  useWorkflowStream,
+} from "../hooks/useWorkflowStream";
 import { fetchWorkflows } from "../lib/workflows";
 import { WorkflowDetail } from "./WorkflowDetail";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
@@ -85,30 +90,38 @@ export function WorkflowCatalogue({ apiUrl }: WorkflowCatalogueProps) {
     retry: false,
   });
   const executionQuery = useQuery({
-    queryKey: ["execution", apiUrl, executionId],
+    queryKey: executionQueryKey(apiUrl, executionId ?? "inactive"),
     queryFn: () => fetchExecution(apiUrl, executionId!),
     enabled: urlReady && executionId !== null,
     retry: false,
-    refetchInterval: (query) =>
-      isActive(query.state.data as WorkflowExecution | undefined) ? 250 : false,
+    structuralSharing: (current, incoming) =>
+      preferNewerExecution(
+        current as WorkflowExecution | undefined,
+        incoming as WorkflowExecution,
+      ),
   });
   const triggerMutation = useMutation({
     mutationFn: (workflowId: string) => triggerWorkflow(apiUrl, workflowId),
     onSuccess: (execution) => {
-      queryClient.setQueryData(["execution", apiUrl, execution.id], execution);
+      queryClient.setQueryData(executionQueryKey(apiUrl, execution.id), execution);
       setExecutionId(execution.id);
       setExecutionUrl(execution.id);
     },
   });
 
   const execution = executionQuery.data;
+  const connectionState = useWorkflowStream({
+    apiUrl,
+    executionId,
+    executionStatus: execution?.status,
+  });
   useEffect(() => {
     if (execution !== undefined) setSelectedId(execution.workflowId);
   }, [execution]);
 
   const clearExecution = () => {
     if (executionId !== null) {
-      queryClient.removeQueries({ queryKey: ["execution", apiUrl, executionId], exact: true });
+      queryClient.removeQueries({ queryKey: executionQueryKey(apiUrl, executionId), exact: true });
     }
     setExecutionId(null);
     setExecutionUrl(null);
@@ -218,7 +231,11 @@ export function WorkflowCatalogue({ apiUrl }: WorkflowCatalogueProps) {
         </div>
       ) : null}
 
-      <WorkflowDetail execution={shownExecution} workflow={selectedWorkflow} />
+      <WorkflowDetail
+        connectionState={connectionState}
+        execution={shownExecution}
+        workflow={selectedWorkflow}
+      />
     </>
   );
 }
