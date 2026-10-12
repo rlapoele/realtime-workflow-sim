@@ -94,7 +94,7 @@ function RequestContextPanel({ workflow }: { readonly workflow: WorkflowDefiniti
       aria-labelledby="request-context-title"
       className="rounded-xl border border-[var(--border)] bg-white p-5 shadow-sm"
     >
-      <div className="flex items-start justify-between gap-4">
+      <div className="flex items-baseline justify-between gap-3">
         <div>
           <p className="text-xs font-bold uppercase tracking-[0.14em] text-emerald-700">
             Fictional request
@@ -103,7 +103,7 @@ function RequestContextPanel({ workflow }: { readonly workflow: WorkflowDefiniti
             Request context
           </h3>
         </div>
-        <span className="rounded-full bg-slate-100 px-2.5 py-1 text-xs font-semibold capitalize text-slate-700">
+        <span className="flex flex-nowrap items-center justify-center rounded-full bg-slate-100 px-2.5 py-1 text-xs font-semibold capitalize text-slate-700">
           {request.priority} priority
         </span>
       </div>
