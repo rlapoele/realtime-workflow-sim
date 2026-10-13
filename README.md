@@ -63,6 +63,8 @@ The root process stops both applications when you press `Ctrl+C`.
 
 ## Verification
 
+For the complete owner-facing setup, production smoke procedure, troubleshooting, and manual browser matrix, use the [local release-candidate test guide](docs/local-testing.md).
+
 Run the automated checks:
 
 ```sh
