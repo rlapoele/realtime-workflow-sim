@@ -147,6 +147,19 @@ describe("ExecutionService", () => {
     ).toBeLessThanOrEqual(32);
   });
 
+  it("never evicts an active execution when completed retention overflows", async () => {
+    const service = createService({ maxCompletedExecutions: 1 });
+    const first = trigger(service, "password-reset");
+    const second = trigger(service, "employee-offboarding");
+    await vi.advanceTimersByTimeAsync(10_000);
+    const active = trigger(service, "employee-onboarding");
+
+    await vi.advanceTimersByTimeAsync(5_000);
+
+    expect(service.get(active.id)?.status).toBe("running");
+    expect([service.get(first.id), service.get(second.id)].filter(Boolean)).toHaveLength(1);
+  });
+
   it("cancels scheduled work during application shutdown", async () => {
     const service = createService();
     const created = trigger(service, "employee-onboarding");

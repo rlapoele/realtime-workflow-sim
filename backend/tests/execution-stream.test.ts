@@ -155,6 +155,24 @@ describe("ExecutionService event streams", () => {
     expect(service.get(execution.id)?.status).toBe("success");
   });
 
+  it("completes active streams and clears their heartbeat during shutdown", async () => {
+    const service = createService();
+    const execution = trigger(service, "employee-onboarding");
+    let completed = false;
+    service.stream(execution.id)?.subscribe({
+      complete: () => {
+        completed = true;
+      },
+    });
+    await vi.advanceTimersByTimeAsync(0);
+
+    expect(vi.getTimerCount()).toBeGreaterThan(0);
+    service.onApplicationShutdown();
+
+    expect(completed).toBe(true);
+    expect(vi.getTimerCount()).toBe(0);
+  });
+
   it("returns no stream for an unknown execution and completes retained terminal snapshots", async () => {
     const service = createService();
     expect(service.stream("missing-execution")).toBeUndefined();
