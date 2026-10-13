@@ -100,7 +100,7 @@ export function ExecutionSummary({
   return (
     <section
       aria-labelledby="execution-status-title"
-      className="rounded-[var(--radius-panel)] border border-[var(--border-strong)] bg-[var(--surface)] shadow-[var(--shadow-panel)]"
+      className="rounded-[var(--radius-panel)] border border-[var(--border-strong)] bg-[var(--surface)] shadow-[var(--shadow-panel)] overflow-hidden"
     >
       <div className="flex flex-col gap-4 border-b border-[var(--border)] px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-5">
         <div aria-atomic="true" aria-live="polite" className="flex items-center gap-3" role="status">
