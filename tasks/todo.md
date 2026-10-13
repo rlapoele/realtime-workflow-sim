@@ -160,6 +160,7 @@ Only work on the phase marked current in `tasks/progress.md`. Check boxes requir
 - [ ] Run clean-install, complete tests, typechecks, builds, production starts, health/CORS checks, and built seed-loading checks.
 - [ ] Create an owner-facing local test guide with verified prerequisites, environment setup, dev and production commands, URLs, process shutdown, troubleshooting, and a manual browser checklist.
 - [ ] Review code quality/security for an unauthenticated fictional demo and remove placeholders, dead code, required TODOs, and unsupported claims.
+- [ ] Normalize frontend imports: keep relative paths for same-directory collaborators, use the existing `@/` alias across frontend directories, and preserve an explicit, consistently verified boundary for root `shared/` contracts rather than adding ad hoc aliases.
 
 **Acceptance criteria:**
 
@@ -168,6 +169,7 @@ Only work on the phase marked current in `tasks/progress.md`. Check boxes requir
 - [ ] The owner can exercise every required scenario locally without Railway, cloud credentials, or Docker.
 - [ ] No active timer/subscription/resource leak is observed in covered lifecycle cases.
 - [ ] Known limitations match the intended prototype boundaries.
+- [ ] Frontend imports follow the recorded path policy and resolve consistently in Astro, Vitest, strict typechecking, and production builds.
 
 **Verification:**
 
