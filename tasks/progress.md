@@ -4,9 +4,9 @@ This file is the single source of truth for which phase **Proceed with the next 
 
 ## Current phase
 
-- Phase: **5 — Production-quality responsive interface**
+- Phase: **6 — Hardening and release-candidate verification**
 - Status: **ready**
-- Last updated: **2026-10-12**
+- Last updated: **2026-10-13**
 - Blocker: none
 
 ## Phase ledger
@@ -17,9 +17,9 @@ This file is the single source of truth for which phase **Proceed with the next 
 | 1 — Compatible foundation and shared contracts | complete | `tasks/evidence/phase-1.md` | Reviewed through Phase 2 authorization |
 | 2 — Workflow catalogue vertical slice | complete | `tasks/evidence/phase-2.md` | Reviewed through Phase 3 authorization |
 | 3 — Deterministic execution vertical slice | complete | `tasks/evidence/phase-3.md` | Reviewed through Phase 4 authorization |
-| 4 — Sequenced real-time streaming and recovery | complete | `tasks/evidence/phase-4.md` | Awaiting user review |
-| 5 — Production-quality responsive interface | ready | — | — |
-| 6 — Hardening and release-candidate verification | pending | — | — |
+| 4 — Sequenced real-time streaming and recovery | complete | `tasks/evidence/phase-4.md` | Reviewed through Phase 5 authorization |
+| 5 — Production-quality responsive interface | complete | `tasks/evidence/phase-5.md` | Awaiting user review |
+| 6 — Hardening and release-candidate verification | ready | — | — |
 | 7 — Railway owner handoff | pending | — | — |
 
 ## Resume rule

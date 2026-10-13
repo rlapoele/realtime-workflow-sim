@@ -126,25 +126,25 @@ Only work on the phase marked current in `tasks/progress.md`. Check boxes requir
 
 **Tasks:**
 
-- [ ] Implement semantic color/spacing/type/radius tokens with verified contrast and restrained emerald/teal use.
-- [ ] Complete top bar, Simulation badge, workflow controls, vertical nodes/connectors, request context, progress/run facts, connection status, and dark console.
-- [ ] Implement near-bottom autoscroll, pause-on-user-scroll, Jump to latest, contained wrapping/scrolling, and no per-chunk live-region announcements.
-- [ ] Implement mobile reading order and accessible collapsible context without horizontal page overflow.
-- [ ] Verify keyboard behavior, focus, status redundancy, reduced motion, labels, errors, loading, reconnecting, and terminal states.
+- [x] Implement semantic color/spacing/type/radius tokens with verified contrast and restrained emerald/teal use.
+- [x] Complete top bar, Simulation badge, workflow controls, vertical nodes/connectors, request context, progress/run facts, connection status, and dark console.
+- [x] Implement near-bottom autoscroll, pause-on-user-scroll, Jump to latest, contained wrapping/scrolling, and no per-chunk live-region announcements.
+- [x] Implement mobile reading order and accessible collapsible context without horizontal page overflow.
+- [x] Verify keyboard behavior, focus, status redundancy, reduced motion, labels, errors, loading, reconnecting, and terminal states.
 
 **Acceptance criteria:**
 
-- [ ] Desktop and mobile layouts match the specification without copied third-party assets or out-of-scope navigation/KPIs.
-- [ ] Base UI composition preserves refs, handlers, ARIA attributes, and keyboard behavior; no Radix or `asChild` is present.
-- [ ] Long IDs/logs stay contained and statuses never rely on color alone.
-- [ ] The main action and execution state remain visually dominant.
+- [x] Desktop and mobile layouts match the specification without copied third-party assets or out-of-scope navigation/KPIs.
+- [x] Base UI composition preserves refs, handlers, ARIA attributes, and keyboard behavior; no Radix or `asChild` is present.
+- [x] Long IDs/logs stay contained and statuses never rely on color alone.
+- [x] The main action and execution state remain visually dominant.
 
 **Verification:**
 
-- [ ] Component/accessibility tests pass.
-- [ ] Typechecks and builds pass.
-- [ ] Real-browser desktop and narrow-viewport screenshots are reviewed.
-- [ ] Keyboard, visible focus, reduced-motion, console scrolling, and overflow checks are recorded.
+- [x] Component/accessibility tests pass.
+- [x] Typechecks and builds pass.
+- [x] Real-browser desktop and narrow-viewport screenshots are reviewed.
+- [x] Keyboard, visible focus, reduced-motion, console scrolling, and overflow checks are recorded.
 
 **Dependencies:** Phase 4.
 
