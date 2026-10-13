@@ -9,6 +9,7 @@ async function bootstrap(): Promise<void> {
   const config = resolveBackendConfig(process.env);
   const app = await NestFactory.create(AppModule);
 
+  app.useSecurityHeaders();
   app.enableCors({ origin: config.frontendOrigin });
   app.enableShutdownHooks();
 
