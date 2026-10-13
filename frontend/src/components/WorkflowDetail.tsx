@@ -20,7 +20,7 @@ import type {
   WorkflowDefinition,
   WorkflowExecution,
 } from "../../../shared/types";
-import type { ConnectionState } from "../hooks/useWorkflowStream";
+import type { ConnectionState } from "@/hooks/useWorkflowStream";
 import { ExecutionConsole } from "./ExecutionConsole";
 import { ExecutionSummary } from "./ExecutionSummary";
 import { RequestContextPanel } from "./RequestContextPanel";

@@ -1,7 +1,7 @@
 import { PlayIcon } from "@heroicons/react/24/outline";
 
 import type { WorkflowDefinition } from "../../../shared/types";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 function WorkflowPicker({
   disabled,

@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { resolvePublicApiUrl } from "../src/lib/api-url";
+import { resolvePublicApiUrl } from "@/lib/api-url";
 
 describe("resolvePublicApiUrl", () => {
   it("normalizes an explicit API URL", () => {

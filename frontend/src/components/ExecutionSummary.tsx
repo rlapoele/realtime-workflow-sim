@@ -9,7 +9,7 @@ import {
 import { useEffect, useState, type ComponentType, type SVGProps } from "react";
 
 import type { WorkflowExecution } from "../../../shared/types";
-import type { ConnectionState } from "../hooks/useWorkflowStream";
+import type { ConnectionState } from "@/hooks/useWorkflowStream";
 
 type OutlineIcon = ComponentType<SVGProps<SVGSVGElement>>;
 

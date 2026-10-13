@@ -4,7 +4,7 @@ import {
   ExecutionApiError,
   fetchExecution,
   triggerWorkflow,
-} from "../src/lib/executions";
+} from "@/lib/executions";
 import { parseExecutionEvent } from "../../shared/execution-schema";
 
 const execution = {

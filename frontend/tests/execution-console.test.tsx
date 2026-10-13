@@ -2,7 +2,7 @@ import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 
 import type { WorkflowDefinition, WorkflowExecution } from "../../shared/types";
-import { ExecutionConsole } from "../src/components/ExecutionConsole";
+import { ExecutionConsole } from "@/components/ExecutionConsole";
 
 const workflow = {
   id: "employee-onboarding",

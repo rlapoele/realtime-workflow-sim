@@ -7,7 +7,7 @@ import type { ExecutionEvent, WorkflowExecution } from "../../shared/types";
 import {
   executionQueryKey,
   useWorkflowStream,
-} from "../src/hooks/useWorkflowStream";
+} from "@/hooks/useWorkflowStream";
 
 const apiUrl = "http://localhost:3000";
 const execution: WorkflowExecution = {

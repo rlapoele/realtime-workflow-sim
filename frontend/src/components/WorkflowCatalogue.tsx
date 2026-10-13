@@ -7,13 +7,13 @@ import {
   ExecutionApiError,
   fetchExecution,
   triggerWorkflow,
-} from "../lib/executions";
+} from "@/lib/executions";
 import {
   executionQueryKey,
   preferNewerExecution,
   useWorkflowStream,
-} from "../hooks/useWorkflowStream";
-import { fetchWorkflows } from "../lib/workflows";
+} from "@/hooks/useWorkflowStream";
+import { fetchWorkflows } from "@/lib/workflows";
 import { WorkflowControls } from "./WorkflowControls";
 import { WorkflowDetail } from "./WorkflowDetail";
 

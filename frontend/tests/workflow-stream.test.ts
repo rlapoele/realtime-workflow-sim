@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import type { ExecutionEvent, WorkflowExecution } from "../../shared/types";
-import { reconcileExecutionEvent } from "../src/lib/workflow-stream";
+import { reconcileExecutionEvent } from "@/lib/workflow-stream";
 
 const execution: WorkflowExecution = {
   id: "execution-1",

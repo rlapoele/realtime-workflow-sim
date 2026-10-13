@@ -1,7 +1,7 @@
 ---
-import { DashboardApp } from "../components/DashboardApp";
-import { resolvePublicApiUrl } from "../lib/api-url";
-import "../styles/global.css";
+import { DashboardApp } from "@/components/DashboardApp";
+import { resolvePublicApiUrl } from "@/lib/api-url";
+import "@/styles/global.css";
 
 const apiUrl = resolvePublicApiUrl({
   configuredUrl: import.meta.env.PUBLIC_API_URL,

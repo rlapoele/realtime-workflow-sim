@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 
-import { DashboardApp } from "../src/components/DashboardApp";
+import { DashboardApp } from "@/components/DashboardApp";
 
 describe("DashboardApp", () => {
   it("shows the simulation shell and does not expose a run without a workflow", async () => {

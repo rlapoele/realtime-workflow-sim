@@ -7,8 +7,8 @@ import type {
   ExecutionStatus,
   WorkflowExecution,
 } from "../../../shared/types";
-import { fetchExecution } from "../lib/executions";
-import { reconcileExecutionEvent } from "../lib/workflow-stream";
+import { fetchExecution } from "@/lib/executions";
+import { reconcileExecutionEvent } from "@/lib/workflow-stream";
 
 export type ConnectionState =
   | "connecting"

@@ -1,7 +1,7 @@
 import { fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 
-import { DashboardApp } from "../src/components/DashboardApp";
+import { DashboardApp } from "@/components/DashboardApp";
 
 const workflows = [
   {
