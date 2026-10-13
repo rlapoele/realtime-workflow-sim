@@ -154,29 +154,29 @@ Only work on the phase marked current in `tasks/progress.md`. Check boxes requir
 
 **Tasks:**
 
-- [ ] Audit the implementation against every section of `docs/specification.md` and close uncovered gaps without adding scope.
-- [ ] Strengthen automated coverage for integration boundaries, shutdown, retention/log bounds, production configuration, and regressions found in browser testing.
-- [ ] Run all four workflows end to end, including refresh/reconnect and deterministic failure.
-- [ ] Run clean-install, complete tests, typechecks, builds, production starts, health/CORS checks, and built seed-loading checks.
-- [ ] Create an owner-facing local test guide with verified prerequisites, environment setup, dev and production commands, URLs, process shutdown, troubleshooting, and a manual browser checklist.
-- [ ] Review code quality/security for an unauthenticated fictional demo and remove placeholders, dead code, required TODOs, and unsupported claims.
-- [ ] Normalize frontend imports: keep relative paths for same-directory collaborators, use the existing `@/` alias across frontend directories, and preserve an explicit, consistently verified boundary for root `shared/` contracts rather than adding ad hoc aliases.
+- [x] Audit the implementation against every section of `docs/specification.md` and close uncovered gaps without adding scope.
+- [x] Strengthen automated coverage for integration boundaries, shutdown, retention/log bounds, production configuration, and regressions found in browser testing.
+- [x] Run all four workflows end to end, including refresh/reconnect and deterministic failure.
+- [x] Run clean-install, complete tests, typechecks, builds, production starts, health/CORS checks, and built seed-loading checks.
+- [x] Create an owner-facing local test guide with verified prerequisites, environment setup, dev and production commands, URLs, process shutdown, troubleshooting, and a manual browser checklist.
+- [x] Review code quality/security for an unauthenticated fictional demo and remove placeholders, dead code, required TODOs, and unsupported claims.
+- [x] Normalize frontend imports: keep relative paths for same-directory collaborators, use the existing `@/` alias across frontend directories, and preserve an explicit, consistently verified boundary for root `shared/` contracts rather than adding ad hoc aliases.
 
 **Acceptance criteria:**
 
-- [ ] Every definition-of-done statement maps to recorded evidence or an explicitly unresolved blocker.
-- [ ] Production commands work from a clean install with documented environment values.
-- [ ] The owner can exercise every required scenario locally without Railway, cloud credentials, or Docker.
-- [ ] No active timer/subscription/resource leak is observed in covered lifecycle cases.
-- [ ] Known limitations match the intended prototype boundaries.
-- [ ] Frontend imports follow the recorded path policy and resolve consistently in Astro, Vitest, strict typechecking, and production builds.
+- [x] Every definition-of-done statement maps to recorded evidence or an explicitly unresolved blocker.
+- [x] Production commands work from a clean install with documented environment values.
+- [x] The owner can exercise every required scenario locally without Railway, cloud credentials, or Docker.
+- [x] No active timer/subscription/resource leak is observed in covered lifecycle cases.
+- [x] Known limitations match the intended prototype boundaries.
+- [x] Frontend imports follow the recorded path policy and resolve consistently in Astro, Vitest, strict typechecking, and production builds.
 
 **Verification:**
 
-- [ ] Root test, typecheck, and build commands pass from clean dependencies.
-- [ ] Both production services start together on configured ports and complete smoke flows.
-- [ ] Real-browser matrix in the specification passes.
-- [ ] `git diff --check` and a scoped final diff review pass when Git is available.
+- [x] Root test, typecheck, and build commands pass from clean dependencies.
+- [x] Both production services start together on configured ports and complete smoke flows.
+- [x] Real-browser matrix in the specification passes.
+- [x] `git diff --check` and a scoped final diff review pass when Git is available.
 
 **Dependencies:** Phase 5.
 

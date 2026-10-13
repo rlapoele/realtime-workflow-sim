@@ -4,7 +4,7 @@ This file is the single source of truth for which phase **Proceed with the next 
 
 ## Current phase
 
-- Phase: **6 — Hardening and release-candidate verification**
+- Phase: **7 — Railway owner handoff**
 - Status: **ready**
 - Last updated: **2026-10-13**
 - Blocker: none
@@ -18,9 +18,9 @@ This file is the single source of truth for which phase **Proceed with the next 
 | 2 — Workflow catalogue vertical slice | complete | `tasks/evidence/phase-2.md` | Reviewed through Phase 3 authorization |
 | 3 — Deterministic execution vertical slice | complete | `tasks/evidence/phase-3.md` | Reviewed through Phase 4 authorization |
 | 4 — Sequenced real-time streaming and recovery | complete | `tasks/evidence/phase-4.md` | Reviewed through Phase 5 authorization |
-| 5 — Production-quality responsive interface | complete | `tasks/evidence/phase-5.md` | Awaiting user review |
-| 6 — Hardening and release-candidate verification | ready | — | — |
-| 7 — Railway owner handoff | pending | — | — |
+| 5 — Production-quality responsive interface | complete | `tasks/evidence/phase-5.md` | Reviewed through Phase 6 authorization |
+| 6 — Hardening and release-candidate verification | complete | `tasks/evidence/phase-6.md` | Awaiting user review |
+| 7 — Railway owner handoff | ready | — | — |
 
 ## Resume rule
 
