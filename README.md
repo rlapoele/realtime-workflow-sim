@@ -55,6 +55,8 @@ The backend health endpoint is [http://localhost:3000/health](http://localhost:3
 
 The interface reports `connecting`, `connected`, `reconnecting`, `disconnected`, or `completed`. Sequence gaps recover through the authoritative GET endpoint, while duplicate and stale events are ignored. Heartbeats keep the stream observable without causing execution refetches.
 
+The execution log follows new output while you remain near the bottom. Scrolling upward pauses that behavior and reveals **Jump to latest** so reading is never interrupted. The dashboard is keyboard-operable, reduced-motion aware, and responsive down to a 320 px viewport without page-level horizontal scrolling.
+
 Execution data is process-local: restarting the backend clears it. The interface detects an expired or missing execution and offers a new-run recovery action. Completed history is capped at 50 runs and accumulated logs at 64,000 characters per execution; active runs are never removed by retention.
 
 The root process stops both applications when you press `Ctrl+C`.

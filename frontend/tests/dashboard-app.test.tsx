@@ -14,7 +14,12 @@ describe("DashboardApp", () => {
 
     render(<DashboardApp apiUrl="http://localhost:3000" />);
 
+    expect(screen.getByRole("link", { name: "Skip to main content" })).toHaveAttribute(
+      "href",
+      "#main-content",
+    );
     expect(screen.getByRole("heading", { name: "Workflow executions" })).toBeVisible();
+    expect(screen.getByRole("main")).toHaveAttribute("id", "main-content");
     expect(await screen.findByText("No workflows are available.")).toBeVisible();
     expect(screen.queryByRole("button", { name: /run workflow/i })).not.toBeInTheDocument();
     expect(fetch).toHaveBeenCalledWith("http://localhost:3000/workflows");

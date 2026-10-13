@@ -1,8 +1,8 @@
-import { CircleStackIcon, PlayIcon, UserIcon } from "@heroicons/react/24/outline";
+import { CircleStackIcon, UserIcon } from "@heroicons/react/24/outline";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 
-import type { WorkflowDefinition, WorkflowExecution } from "../../../shared/types";
+import type { WorkflowExecution } from "../../../shared/types";
 import {
   ExecutionApiError,
   fetchExecution,
@@ -14,8 +14,8 @@ import {
   useWorkflowStream,
 } from "../hooks/useWorkflowStream";
 import { fetchWorkflows } from "../lib/workflows";
+import { WorkflowControls } from "./WorkflowControls";
 import { WorkflowDetail } from "./WorkflowDetail";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
 
 export interface WorkflowCatalogueProps {
   readonly apiUrl: string;
@@ -30,47 +30,6 @@ function setExecutionUrl(executionId: string | null): void {
   if (executionId === null) url.searchParams.delete("executionId");
   else url.searchParams.set("executionId", executionId);
   window.history.replaceState(null, "", `${url.pathname}${url.search}${url.hash}`);
-}
-
-function WorkflowPicker({
-  disabled,
-  onChange,
-  value,
-  workflows,
-}: {
-  readonly disabled: boolean;
-  readonly onChange: (value: string) => void;
-  readonly value: string;
-  readonly workflows: readonly WorkflowDefinition[];
-}) {
-  const items = workflows.map((workflow) => ({ label: workflow.name, value: workflow.id }));
-
-  return (
-    <div className="min-w-0 flex-1">
-      <label className="mb-2 block text-sm font-semibold" id="workflow-label">
-        Workflow
-      </label>
-      <Select
-        disabled={disabled}
-        items={items}
-        onValueChange={(nextValue) => {
-          if (typeof nextValue === "string") onChange(nextValue);
-        }}
-        value={value}
-      >
-        <SelectTrigger aria-labelledby="workflow-label">
-          <SelectValue />
-        </SelectTrigger>
-        <SelectContent>
-          {workflows.map((workflow) => (
-            <SelectItem key={workflow.id} value={workflow.id}>
-              {workflow.name}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
-    </div>
-  );
 }
 
 export function WorkflowCatalogue({ apiUrl }: WorkflowCatalogueProps) {
@@ -131,12 +90,13 @@ export function WorkflowCatalogue({ apiUrl }: WorkflowCatalogueProps) {
   if (catalogueQuery.isPending) {
     return (
       <div
-        className="rounded-xl border border-[var(--border)] bg-white p-8 text-center shadow-sm"
+        aria-busy="true"
+        className="rounded-[var(--radius-panel)] border border-[var(--border)] bg-[var(--surface)] p-8 text-center shadow-[var(--shadow-panel)]"
         role="status"
       >
         <CircleStackIcon
           aria-hidden="true"
-          className="mx-auto size-7 animate-pulse text-emerald-700 motion-reduce:animate-none"
+          className="mx-auto size-7 animate-pulse text-[var(--primary)] motion-reduce:animate-none"
         />
         <p className="mt-3 font-medium">Loading workflows…</p>
       </div>
@@ -146,7 +106,7 @@ export function WorkflowCatalogue({ apiUrl }: WorkflowCatalogueProps) {
   if (catalogueQuery.isError) {
     return (
       <div
-        className="rounded-xl border border-red-200 bg-red-50 p-5 text-[var(--failure)]"
+        className="rounded-[var(--radius-panel)] border border-[var(--status-failure-border)] bg-[var(--status-failure-surface)] p-5 text-[var(--status-failure)] shadow-[var(--shadow-panel)]"
         role="alert"
       >
         <p className="font-semibold">Workflow catalogue unavailable.</p>
@@ -157,8 +117,8 @@ export function WorkflowCatalogue({ apiUrl }: WorkflowCatalogueProps) {
 
   if (catalogueQuery.data.length === 0) {
     return (
-      <div className="rounded-xl border border-[var(--border)] bg-white p-8 text-center shadow-sm">
-        <UserIcon aria-hidden="true" className="mx-auto size-7 text-slate-500" />
+      <div className="rounded-[var(--radius-panel)] border border-[var(--border)] bg-[var(--surface)] p-8 text-center shadow-[var(--shadow-panel)]">
+        <UserIcon aria-hidden="true" className="mx-auto size-7 text-[var(--muted-foreground)]" />
         <p className="mt-3 font-semibold">No workflows are available.</p>
         <p className="mt-1 text-sm text-[var(--muted-foreground)]">
           Add a validated workflow seed to populate this catalogue.
@@ -179,43 +139,29 @@ export function WorkflowCatalogue({ apiUrl }: WorkflowCatalogueProps) {
     : shownExecution === undefined
       ? "Run workflow"
       : "Run again";
-  const buttonLabel = triggerMutation.isPending ? "Starting workflow" : terminalButtonLabel;
-
   return (
     <>
-      <div className="flex flex-col gap-4 rounded-xl border border-[var(--border)] bg-white p-5 shadow-sm sm:flex-row sm:items-end">
-        <WorkflowPicker
-          disabled={active}
-          onChange={(workflowId) => {
-            setSelectedId(workflowId);
-            clearExecution();
-          }}
-          value={selectedWorkflow.id}
-          workflows={catalogueQuery.data}
-        />
-        <button
-          aria-label={buttonLabel}
-          className="inline-flex min-h-11 items-center justify-center gap-2 rounded-lg bg-[var(--primary)] px-5 py-2.5 text-sm font-bold text-white shadow-sm transition hover:bg-[var(--primary-hover)] focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-emerald-700/25 disabled:cursor-not-allowed disabled:bg-slate-400"
-          disabled={active || triggerMutation.isPending}
-          onClick={() => triggerMutation.mutate(selectedWorkflow.id)}
-          type="button"
-        >
-          <PlayIcon aria-hidden="true" className="size-4" />
-          {triggerMutation.isPending ? "Starting…" : terminalButtonLabel}
-        </button>
-        <div className="rounded-lg bg-[var(--accent)] px-4 py-2.5 text-sm text-emerald-900 sm:max-w-xs">
-          Simulation only. No external systems are contacted.
-        </div>
-      </div>
+      <WorkflowControls
+        active={active}
+        buttonLabel={terminalButtonLabel}
+        isStarting={triggerMutation.isPending}
+        onChange={(workflowId) => {
+          setSelectedId(workflowId);
+          clearExecution();
+        }}
+        onRun={() => triggerMutation.mutate(selectedWorkflow.id)}
+        selectedId={selectedWorkflow.id}
+        workflows={catalogueQuery.data}
+      />
 
       {missingExecution ? (
-        <div className="mt-5 rounded-xl border border-amber-300 bg-amber-50 p-5" role="alert">
+        <div className="mt-5 rounded-[var(--radius-panel)] border border-[var(--status-warning-border)] bg-[var(--status-warning-surface)] p-5 shadow-[var(--shadow-panel)]" role="alert">
           <p className="font-semibold">This execution is no longer available.</p>
           <p className="mt-1 text-sm text-[var(--muted-foreground)]">
             The local API may have restarted or removed older completed runs.
           </p>
           <button
-            className="mt-4 rounded-lg border border-amber-700 px-4 py-2 text-sm font-bold text-amber-900 focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-amber-700/25"
+            className="mt-4 min-h-11 rounded-[var(--radius-control)] border border-[var(--status-warning)] px-4 py-2 text-sm font-bold text-[var(--status-warning)] outline-none focus-visible:ring-3 focus-visible:ring-[var(--focus-warning)]"
             onClick={clearExecution}
             type="button"
           >
@@ -225,8 +171,8 @@ export function WorkflowCatalogue({ apiUrl }: WorkflowCatalogueProps) {
       ) : null}
 
       {triggerMutation.isError ? (
-        <div className="mt-5 rounded-xl border border-red-200 bg-red-50 p-5" role="alert">
-          <p className="font-semibold text-[var(--failure)]">The workflow could not be started.</p>
+        <div className="mt-5 rounded-[var(--radius-panel)] border border-[var(--status-failure-border)] bg-[var(--status-failure-surface)] p-5 shadow-[var(--shadow-panel)]" role="alert">
+          <p className="font-semibold text-[var(--status-failure)]">The workflow could not be started.</p>
           <p className="mt-1 text-sm">Check that the local API is running and try again.</p>
         </div>
       ) : null}

@@ -1,4 +1,4 @@
-import { act, fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { act, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 
 import { DashboardApp } from "../src/components/DashboardApp";
@@ -139,6 +139,15 @@ describe("workflow execution UI", () => {
 
     await waitFor(() => expect(ControllableEventSource.instances).toHaveLength(1));
     act(() => {
+      ControllableEventSource.instances[0]!.onerror?.(new Event("error"));
+    });
+    expect(screen.getByText("Reconnecting")).toBeVisible();
+    act(() => {
+      ControllableEventSource.instances[0]!.onopen?.(new Event("open"));
+    });
+    expect(screen.getByText("Connected")).toBeVisible();
+
+    act(() => {
       ControllableEventSource.instances[0]!.emit({
         type: "execution.snapshot",
         executionId: completedExecution.id,
@@ -222,6 +231,27 @@ describe("workflow execution UI", () => {
 
     expect(await screen.findByText("Execution succeeded")).toBeVisible();
     expect(screen.getByText("Execution execution-1")).toBeVisible();
+    expect(screen.getByText("1 of 1")).toBeVisible();
+    expect(screen.getByText("3s")).toBeVisible();
+    expect(screen.getByText("Completed")).toBeVisible();
+  });
+
+  it("places collapsible request context before steps and logs in reading order", async () => {
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue(json([workflow])));
+    render(<DashboardApp apiUrl="http://localhost:3000" />);
+
+    const contextToggle = await screen.findByText("Request context");
+    const steps = screen.getByRole("list", { name: "Workflow steps" });
+    const consoleHeading = screen.getByRole("heading", { name: "Execution log" });
+
+    expect(contextToggle.closest("details")).toHaveAttribute("open");
+    expect(
+      contextToggle.compareDocumentPosition(steps) & Node.DOCUMENT_POSITION_FOLLOWING,
+    ).toBeTruthy();
+    expect(
+      steps.compareDocumentPosition(consoleHeading) & Node.DOCUMENT_POSITION_FOLLOWING,
+    ).toBeTruthy();
+    expect(within(steps).getByText("Pending")).toBeVisible();
   });
 
   it("offers a clear recovery action for expired or restarted state", async () => {
