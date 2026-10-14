@@ -180,6 +180,35 @@ Only work on the phase marked current in `tasks/progress.md`. Check boxes requir
 
 **Dependencies:** Phase 5.
 
+## Phase 6.10: Base UI component normalization
+
+**Outcome:** Repeated status, action, and feedback treatments use a restrained shared component layer without flattening the dashboard's native semantics or specialized interaction behavior.
+
+**Tasks:**
+
+- [x] Add local shadcn/Base UI-style Badge, Button, and Alert primitives using the existing design tokens and Heroicons.
+- [x] Add a project-specific StatusBadge composition for icon, label, and reduced-motion-safe activity treatment.
+- [x] Migrate the Simulation and scenario indicators, step and connection statuses, request priority, workflow actions, Jump to latest, and actionable error states.
+- [x] Retain native details/summary, progress, log scrolling, live-region ownership, and specialized panels where an additional primitive would add indirection without usability value.
+- [x] Add focused primitive tests and re-run real-browser desktop, narrow-viewport, keyboard, execution-state, and console checks.
+
+**Acceptance criteria:**
+
+- [x] Shared primitives preserve refs, event handlers, disabled state, accessible names, explicit alert/status semantics, visible focus, and reduced-motion behavior.
+- [x] The interface gains consistent recurring components without introducing Radix, `asChild`, Lucide icons, new dependencies, or a broad visual redesign.
+- [x] The workflow engine, API contracts, and SSE protocol are unchanged.
+- [x] Native semantic elements and the specialized console behavior remain intact.
+
+**Verification:**
+
+- [x] Focused primitive tests and the complete frontend test suite pass.
+- [x] Strict frontend typechecking and production builds pass.
+- [x] A deterministic workflow runs to its expected terminal state in a real browser with no console errors or warnings.
+- [x] Desktop and 390 px layouts are reviewed, keyboard order is intact, and no page-level horizontal overflow is present.
+- [x] `git diff --check` and a scoped diff review pass when Git is available.
+
+**Dependencies:** Phase 6.
+
 ## Phase 7: Railway owner handoff
 
 **Outcome:** The owner can deploy two services from one GitHub monorepo using verified, current instructions; Codex does not perform deployment.
@@ -214,6 +243,6 @@ Phase 7 begins only after the local guide and local release-candidate checks are
 
 ## Final checkpoint
 
-- [ ] All seven evidence files exist and all phase acceptance criteria are checked.
+- [ ] All phase evidence files exist and all phase acceptance criteria are checked.
 - [ ] `tasks/progress.md` marks the project complete rather than naming another phase.
 - [ ] The user, not Codex, decides whether and when to deploy.

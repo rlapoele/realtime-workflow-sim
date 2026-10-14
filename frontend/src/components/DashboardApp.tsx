@@ -2,6 +2,7 @@ import { CircleStackIcon } from "@heroicons/react/24/outline";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useState } from "react";
 
+import { Badge } from "@/components/ui/badge";
 import { WorkflowCatalogue } from "./WorkflowCatalogue";
 
 export interface DashboardAppProps {
@@ -30,10 +31,13 @@ function DashboardShell({ apiUrl }: DashboardAppProps) {
               AgentFlow <span className="text-[var(--console-muted)]">Live</span>
             </span>
           </a>
-          <span className="inline-flex min-h-8 items-center gap-2 rounded-full border border-[var(--decorative)]/35 bg-[var(--decorative)] px-3 text-xs font-bold uppercase tracking-[0.1em] text-[var(--brand)]">
+          <Badge
+            className="min-h-8 gap-2 px-3 font-bold uppercase tracking-[0.1em]"
+            variant="accent"
+          >
             <span aria-hidden="true" className="size-1.5 rounded-full bg-[var(--brand)]" />
             Simulation
-          </span>
+          </Badge>
         </div>
       </header>
 

@@ -1,6 +1,7 @@
 import { PlayIcon } from "@heroicons/react/24/outline";
 
 import type { WorkflowDefinition } from "../../../shared/types";
+import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 function WorkflowPicker({
@@ -81,16 +82,15 @@ export function WorkflowControls({
           value={selectedId}
           workflows={workflows}
         />
-        <button
+        <Button
           aria-label={isStarting ? "Starting workflow" : buttonLabel}
-          className="inline-flex min-h-11 items-center justify-center gap-2 rounded-[var(--radius-control)] bg-[var(--primary)] px-5 py-2.5 text-sm font-bold text-[var(--primary-foreground)] shadow-[var(--shadow-control)] outline-none transition hover:bg-[var(--primary-hover)] focus-visible:ring-3 focus-visible:ring-[var(--focus-ring)] disabled:cursor-not-allowed disabled:bg-[var(--disabled)] disabled:text-[var(--disabled-foreground)] motion-reduce:transition-none sm:min-w-44"
+          className="sm:min-w-44"
           disabled={active || isStarting}
           onClick={onRun}
-          type="button"
         >
           <PlayIcon aria-hidden="true" className="size-4" />
           {isStarting ? "Starting…" : buttonLabel}
-        </button>
+        </Button>
       </div>
     </section>
   );

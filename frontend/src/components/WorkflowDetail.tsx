@@ -20,6 +20,7 @@ import type {
   WorkflowDefinition,
   WorkflowExecution,
 } from "../../../shared/types";
+import { StatusBadge } from "@/components/StatusBadge";
 import type { ConnectionState } from "@/hooks/useWorkflowStream";
 import { ExecutionConsole } from "./ExecutionConsole";
 import { ExecutionSummary } from "./ExecutionSummary";
@@ -77,13 +78,14 @@ function WorkflowStep({
       <div className="workflow-step-card min-w-0 rounded-[var(--radius-control)] border bg-[var(--surface)] px-4 py-3 shadow-[var(--shadow-control)]">
         <div className="flex flex-wrap items-start justify-between gap-2">
           <h4 className="font-semibold leading-6">{step.name}</h4>
-          <span className="workflow-step-status inline-flex min-h-7 items-center gap-1.5 rounded-full px-2.5 text-xs font-semibold">
-            <StatusIcon
-              aria-hidden="true"
-              className={`size-3.5 ${status === "running" ? "animate-spin motion-reduce:animate-none" : ""}`}
-            />
+          <StatusBadge
+            className="workflow-step-status"
+            icon={StatusIcon}
+            spin={status === "running"}
+            variant="secondary"
+          >
             {presentation.label}
-          </span>
+          </StatusBadge>
         </div>
         <p className="mt-1 text-sm leading-6 text-[var(--muted-foreground)]">{step.description}</p>
         <p className="mt-2 text-xs font-semibold uppercase tracking-[0.1em] text-[var(--muted-foreground)]">
@@ -134,16 +136,13 @@ export function WorkflowDetail({
               {workflow.description}
             </p>
           </div>
-          <span
-            className={`inline-flex min-h-8 items-center gap-2 rounded-full px-3 text-xs font-semibold ${fails ? "bg-[var(--status-failure-surface)] text-[var(--status-failure)]" : "bg-[var(--status-success-surface)] text-[var(--status-success)]"}`}
+          <StatusBadge
+            className="min-h-8 gap-2 px-3"
+            icon={fails ? ExclamationTriangleIcon : CheckCircleIcon}
+            variant={fails ? "destructive" : "success"}
           >
-            {fails ? (
-              <ExclamationTriangleIcon aria-hidden="true" className="size-4" />
-            ) : (
-              <CheckCircleIcon aria-hidden="true" className="size-4" />
-            )}
             Expected {workflow.expectedScenario}
-          </span>
+          </StatusBadge>
         </div>
         <div className="mt-5 flex gap-2 rounded-[var(--radius-control)] border border-[var(--border)] bg-[var(--surface-subtle)] px-4 py-3 text-sm">
           <span className="shrink-0 font-semibold">Trigger</span>

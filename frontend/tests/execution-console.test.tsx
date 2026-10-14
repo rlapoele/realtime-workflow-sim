@@ -99,6 +99,7 @@ describe("ExecutionConsole", () => {
 
     expect(screen.getByText("Live follow paused")).toBeVisible();
     const jumpButton = screen.getByRole("button", { name: "Jump to latest log" });
+    expect(jumpButton).toHaveAttribute("data-slot", "button");
 
     rerender(
       <ExecutionConsole

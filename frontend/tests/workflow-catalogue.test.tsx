@@ -95,6 +95,7 @@ describe("workflow catalogue", () => {
     expect(screen.getByRole("status")).toHaveTextContent("Loading workflows");
     expect(await screen.findByRole("heading", { name: "Application access" })).toBeVisible();
     expect(screen.getByText("Expected failure")).toBeVisible();
+    expect(screen.getByText("Expected failure")).toHaveAttribute("data-slot", "badge");
     expect(screen.getByText("Nora Martin")).toBeVisible();
     expect(screen.getByText("Figma")).toBeVisible();
 
@@ -134,6 +135,7 @@ describe("workflow catalogue", () => {
 
     const alert = await screen.findByRole("alert");
     expect(alert).toHaveTextContent("Workflow catalogue unavailable.");
+    expect(alert).toHaveAttribute("data-slot", "alert");
     expect(alert).toHaveTextContent("Check that the local API is running and try again.");
   });
 

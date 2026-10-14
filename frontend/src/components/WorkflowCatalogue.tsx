@@ -3,6 +3,8 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 
 import type { WorkflowExecution } from "../../../shared/types";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Button } from "@/components/ui/button";
 import {
   ExecutionApiError,
   fetchExecution,
@@ -105,13 +107,10 @@ export function WorkflowCatalogue({ apiUrl }: WorkflowCatalogueProps) {
 
   if (catalogueQuery.isError) {
     return (
-      <div
-        className="rounded-[var(--radius-panel)] border border-[var(--status-failure-border)] bg-[var(--status-failure-surface)] p-5 text-[var(--status-failure)] shadow-[var(--shadow-panel)]"
-        role="alert"
-      >
-        <p className="font-semibold">Workflow catalogue unavailable.</p>
-        <p className="mt-1 text-sm">Check that the local API is running and try again.</p>
-      </div>
+      <Alert role="alert" variant="destructive">
+        <AlertTitle>Workflow catalogue unavailable.</AlertTitle>
+        <AlertDescription>Check that the local API is running and try again.</AlertDescription>
+      </Alert>
     );
   }
 
@@ -155,26 +154,22 @@ export function WorkflowCatalogue({ apiUrl }: WorkflowCatalogueProps) {
       />
 
       {missingExecution ? (
-        <div className="mt-5 rounded-[var(--radius-panel)] border border-[var(--status-warning-border)] bg-[var(--status-warning-surface)] p-5 shadow-[var(--shadow-panel)]" role="alert">
-          <p className="font-semibold">This execution is no longer available.</p>
-          <p className="mt-1 text-sm text-[var(--muted-foreground)]">
+        <Alert className="mt-5" role="alert" variant="warning">
+          <AlertTitle>This execution is no longer available.</AlertTitle>
+          <AlertDescription className="text-[var(--muted-foreground)]">
             The local API may have restarted or removed older completed runs.
-          </p>
-          <button
-            className="mt-4 min-h-11 rounded-[var(--radius-control)] border border-[var(--status-warning)] px-4 py-2 text-sm font-bold text-[var(--status-warning)] outline-none focus-visible:ring-3 focus-visible:ring-[var(--focus-warning)]"
-            onClick={clearExecution}
-            type="button"
-          >
+          </AlertDescription>
+          <Button className="mt-4" onClick={clearExecution} variant="warning">
             Start a new run
-          </button>
-        </div>
+          </Button>
+        </Alert>
       ) : null}
 
       {triggerMutation.isError ? (
-        <div className="mt-5 rounded-[var(--radius-panel)] border border-[var(--status-failure-border)] bg-[var(--status-failure-surface)] p-5 shadow-[var(--shadow-panel)]" role="alert">
-          <p className="font-semibold text-[var(--status-failure)]">The workflow could not be started.</p>
-          <p className="mt-1 text-sm">Check that the local API is running and try again.</p>
-        </div>
+        <Alert className="mt-5" role="alert" variant="destructive">
+          <AlertTitle>The workflow could not be started.</AlertTitle>
+          <AlertDescription>Check that the local API is running and try again.</AlertDescription>
+        </Alert>
       ) : null}
 
       <WorkflowDetail

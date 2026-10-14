@@ -9,6 +9,7 @@ import {
 import { useEffect, useState, type ComponentType, type SVGProps } from "react";
 
 import type { WorkflowExecution } from "../../../shared/types";
+import { StatusBadge } from "@/components/StatusBadge";
 import type { ConnectionState } from "@/hooks/useWorkflowStream";
 
 type OutlineIcon = ComponentType<SVGProps<SVGSVGElement>>;
@@ -91,7 +92,6 @@ export function ExecutionSummary({
   const status = executionPresentation[execution.status];
   const connection = connectionPresentation[connectionState];
   const StatusIcon = status.icon;
-  const ConnectionIcon = connection.icon;
   const completedSteps = execution.steps.filter(
     (step) => step.status === "success" || step.status === "failed",
   ).length;
@@ -119,18 +119,17 @@ export function ExecutionSummary({
             </h3>
           </div>
         </div>
-        <div
+        <StatusBadge
           aria-atomic="true"
           aria-live="polite"
-          className={`inline-flex min-h-9 items-center gap-2 self-start rounded-full bg-[var(--surface-subtle)] px-3 text-sm font-semibold ${connection.tone}`}
+          className={`min-h-9 self-start px-3 text-sm ${connection.tone}`}
+          icon={connection.icon}
           role="status"
+          spin={connectionState === "connecting" || connectionState === "reconnecting"}
+          variant="surface"
         >
-          <ConnectionIcon
-            aria-hidden="true"
-            className={`size-4 ${connectionState === "connecting" || connectionState === "reconnecting" ? "animate-spin motion-reduce:animate-none" : ""}`}
-          />
           {connection.label}
-        </div>
+        </StatusBadge>
       </div>
       <dl className="grid grid-cols-2 gap-x-4 gap-y-5 px-4 py-4 sm:grid-cols-4 sm:px-5">
         <Fact label="Steps complete" value={`${completedSteps} of ${execution.steps.length}`} />

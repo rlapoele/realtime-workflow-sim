@@ -6,7 +6,7 @@ This file is the single source of truth for which phase **Proceed with the next 
 
 - Phase: **7 — Railway owner handoff**
 - Status: **ready**
-- Last updated: **2026-10-13**
+- Last updated: **2026-10-14**
 - Blocker: none
 
 ## Phase ledger
@@ -19,7 +19,8 @@ This file is the single source of truth for which phase **Proceed with the next 
 | 3 — Deterministic execution vertical slice | complete | `tasks/evidence/phase-3.md` | Reviewed through Phase 4 authorization |
 | 4 — Sequenced real-time streaming and recovery | complete | `tasks/evidence/phase-4.md` | Reviewed through Phase 5 authorization |
 | 5 — Production-quality responsive interface | complete | `tasks/evidence/phase-5.md` | Reviewed through Phase 6 authorization |
-| 6 — Hardening and release-candidate verification | complete | `tasks/evidence/phase-6.md` | Awaiting user review |
+| 6 — Hardening and release-candidate verification | complete | `tasks/evidence/phase-6.md` | Reviewed through Phase 6.10 authorization |
+| 6.10 — Base UI component normalization | complete | `tasks/evidence/phase-6.10.md` | Awaiting user review |
 | 7 — Railway owner handoff | ready | — | — |
 
 ## Resume rule

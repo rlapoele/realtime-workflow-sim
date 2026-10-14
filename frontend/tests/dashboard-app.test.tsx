@@ -19,6 +19,7 @@ describe("DashboardApp", () => {
       "#main-content",
     );
     expect(screen.getByRole("heading", { name: "Workflow executions" })).toBeVisible();
+    expect(screen.getByText("Simulation")).toHaveAttribute("data-slot", "badge");
     expect(screen.getByRole("main")).toHaveAttribute("id", "main-content");
     expect(await screen.findByText("No workflows are available.")).toBeVisible();
     expect(screen.queryByRole("button", { name: /run workflow/i })).not.toBeInTheDocument();

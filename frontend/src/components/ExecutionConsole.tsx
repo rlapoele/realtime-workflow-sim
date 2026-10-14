@@ -2,6 +2,7 @@ import { ArrowDownIcon, CommandLineIcon } from "@heroicons/react/24/outline";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 
 import type { WorkflowDefinition, WorkflowExecution } from "../../../shared/types";
+import { Button } from "@/components/ui/button";
 
 const NEAR_BOTTOM_PX = 48;
 
@@ -60,15 +61,15 @@ export function ExecutionConsole({
           </div>
         </div>
         {!isFollowing && hasLogs ? (
-          <button
+          <Button
             aria-label="Jump to latest log"
-            className="inline-flex min-h-11 items-center gap-2 rounded-[var(--radius-control)] border border-[var(--console-border-strong)] bg-white/6 px-3 text-xs font-semibold text-[var(--console-foreground)] outline-none transition hover:bg-white/10 focus-visible:ring-3 focus-visible:ring-[var(--focus-console)] motion-reduce:transition-none"
             onClick={jumpToLatest}
-            type="button"
+            size="compact"
+            variant="console"
           >
             <ArrowDownIcon aria-hidden="true" className="size-4" />
             Jump to latest
-          </button>
+          </Button>
         ) : null}
       </div>
       <div

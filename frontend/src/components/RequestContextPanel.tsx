@@ -1,6 +1,7 @@
 import { ChevronDownIcon } from "@heroicons/react/24/outline";
 
 import type { JsonValue, RequestContext } from "../../../shared/types";
+import { Badge } from "@/components/ui/badge";
 
 function labelFromKey(key: string): string {
   return key
@@ -31,11 +32,12 @@ export function RequestContextPanel({ request }: { readonly request: RequestCont
             <h3 className="mt-0.5 text-base font-semibold">Request context</h3>
           </div>
           <div className="flex items-center gap-2">
-            <span
-              className={`rounded-full px-2.5 py-1 text-xs font-semibold capitalize ${request.priority === "high" ? "bg-[var(--status-warning-surface)] text-[var(--status-warning)]" : "bg-[var(--surface-subtle)] text-[var(--muted-foreground)]"}`}
+            <Badge
+              className="capitalize"
+              variant={request.priority === "high" ? "warning" : "secondary"}
             >
               {request.priority} priority
-            </span>
+            </Badge>
             <ChevronDownIcon
               aria-hidden="true"
               className="size-4 shrink-0 text-[var(--muted-foreground)] transition group-open:rotate-180 motion-reduce:transition-none"
