@@ -1,11 +1,8 @@
-import type { ComponentType, SVGProps } from "react";
-
+import type { AppIcon } from "@/components/icons/types";
 import { Badge, type BadgeProps } from "@/components/ui/badge";
 
-type OutlineIcon = ComponentType<SVGProps<SVGSVGElement>>;
-
 export interface StatusBadgeProps extends BadgeProps {
-  readonly icon: OutlineIcon;
+  readonly icon: AppIcon;
   readonly spin?: boolean;
 }
 

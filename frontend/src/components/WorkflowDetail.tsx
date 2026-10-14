@@ -20,13 +20,14 @@ import type {
   WorkflowDefinition,
   WorkflowExecution,
 } from "../../../shared/types";
+import type { AppIcon } from "@/components/icons/types";
 import { StatusBadge } from "@/components/StatusBadge";
 import type { ConnectionState } from "@/hooks/useWorkflowStream";
 import { ExecutionConsole } from "./ExecutionConsole";
 import { ExecutionSummary } from "./ExecutionSummary";
 import { RequestContextPanel } from "./RequestContextPanel";
 
-const systemIcons = {
+const systemIcons: Readonly<Record<string, AppIcon>> = {
   applications: Squares2X2Icon,
   approval: UserGroupIcon,
   device: ComputerDesktopIcon,
@@ -36,7 +37,7 @@ const systemIcons = {
   notification: BellAlertIcon,
   policy: ShieldCheckIcon,
   "request-intake": InboxArrowDownIcon,
-} as const;
+};
 
 const statusPresentation = {
   pending: { icon: ClockIcon, label: "Pending", tone: "status-pending" },
@@ -44,7 +45,10 @@ const statusPresentation = {
   success: { icon: CheckCircleIcon, label: "Succeeded", tone: "status-success" },
   failed: { icon: ExclamationTriangleIcon, label: "Failed", tone: "status-failure" },
   skipped: { icon: MinusCircleIcon, label: "Skipped", tone: "status-skipped" },
-} as const;
+} as const satisfies Record<
+  StepExecution["status"],
+  { readonly icon: AppIcon; readonly label: string; readonly tone: string }
+>;
 
 function WorkflowStep({
   execution,
@@ -57,7 +61,7 @@ function WorkflowStep({
   readonly step: StepDefinition;
   readonly total: number;
 }) {
-  const SystemIcon = systemIcons[step.systemId as keyof typeof systemIcons] ?? CircleStackIcon;
+  const SystemIcon = systemIcons[step.systemId] ?? CircleStackIcon;
   const status = execution?.status ?? "pending";
   const presentation = statusPresentation[status];
   const StatusIcon = presentation.icon;

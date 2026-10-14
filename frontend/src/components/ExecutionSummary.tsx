@@ -6,18 +6,20 @@ import {
   SignalIcon,
   SignalSlashIcon,
 } from "@heroicons/react/24/outline";
-import { useEffect, useState, type ComponentType, type SVGProps } from "react";
+import { useEffect, useState } from "react";
 
 import type { WorkflowExecution } from "../../../shared/types";
+import type { AppIcon } from "@/components/icons/types";
 import { StatusBadge } from "@/components/StatusBadge";
 import type { ConnectionState } from "@/hooks/useWorkflowStream";
 
-type OutlineIcon = ComponentType<SVGProps<SVGSVGElement>>;
+interface StatusPresentation {
+  readonly icon: AppIcon;
+  readonly label: string;
+  readonly tone: string;
+}
 
-const executionPresentation: Record<
-  WorkflowExecution["status"],
-  { readonly icon: OutlineIcon; readonly label: string; readonly tone: string }
-> = {
+const executionPresentation: Record<WorkflowExecution["status"], StatusPresentation> = {
   pending: { icon: ClockIcon, label: "Execution queued", tone: "text-[var(--status-pending)]" },
   running: { icon: ArrowPathIcon, label: "Execution running", tone: "text-[var(--status-running)]" },
   success: {
@@ -32,10 +34,7 @@ const executionPresentation: Record<
   },
 };
 
-const connectionPresentation: Record<
-  ConnectionState,
-  { readonly icon: OutlineIcon; readonly label: string; readonly tone: string }
-> = {
+const connectionPresentation: Record<ConnectionState, StatusPresentation> = {
   connecting: { icon: ArrowPathIcon, label: "Connecting", tone: "text-[var(--status-running)]" },
   connected: { icon: SignalIcon, label: "Connected", tone: "text-[var(--status-success)]" },
   reconnecting: {

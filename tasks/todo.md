@@ -209,6 +209,33 @@ Only work on the phase marked current in `tasks/progress.md`. Check boxes requir
 
 **Dependencies:** Phase 6.
 
+## Phase 6.20: Type-safe icon contracts
+
+**Outcome:** Icon-bearing components and feature-local presentation maps share one compile-time icon contract without adding a global registry or runtime abstraction.
+
+**Tasks:**
+
+- [x] Add a type-only `AppIcon` contract compatible with the existing Heroicons React components.
+- [x] Use the shared type in StatusBadge and execution-state presentation maps instead of duplicating SVG component types.
+- [x] Add explicit type coverage to the workflow step-status and known system-icon maps while retaining the generic fallback for unknown authored system IDs.
+- [x] Keep direct Heroicons imports and feature-local maps; do not add an SVG sprite, barrel, global context, dynamic icon-name API, or dependency.
+
+**Acceptance criteria:**
+
+- [x] Status and connection maps remain exhaustive for their domain unions at compile time.
+- [x] Known workflow system mappings accept only compatible icon components while unknown system IDs still use the existing fallback.
+- [x] The type module produces no runtime component, global state, or icon registry.
+- [x] Rendering, accessibility semantics, bundle-loading strategy, workflow behavior, API contracts, and SSE protocol are unchanged.
+
+**Verification:**
+
+- [x] The complete frontend test suite and strict frontend typecheck pass.
+- [x] The frontend production build passes with no new dependency or runtime icon module.
+- [x] The complete repository verification gate passes.
+- [x] `git diff --check` and a scoped diff review pass when Git is available.
+
+**Dependencies:** Phase 6.10.
+
 ## Phase 7: Railway owner handoff
 
 **Outcome:** The owner can deploy two services from one GitHub monorepo using verified, current instructions; Codex does not perform deployment.
