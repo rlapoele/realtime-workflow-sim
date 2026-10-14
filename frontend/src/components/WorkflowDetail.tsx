@@ -22,6 +22,7 @@ import type {
 } from "../../../shared/types";
 import type { AppIcon } from "@/components/icons/types";
 import { StatusBadge } from "@/components/StatusBadge";
+import type { BadgeProps } from "@/components/ui/badge";
 import type { ConnectionState } from "@/hooks/useWorkflowStream";
 import { ExecutionConsole } from "./ExecutionConsole";
 import { ExecutionSummary } from "./ExecutionSummary";
@@ -40,14 +41,50 @@ const systemIcons: Readonly<Record<string, AppIcon>> = {
 };
 
 const statusPresentation = {
-  pending: { icon: ClockIcon, label: "Pending", tone: "status-pending" },
-  running: { icon: ArrowPathIcon, label: "Running", tone: "status-running" },
-  success: { icon: CheckCircleIcon, label: "Succeeded", tone: "status-success" },
-  failed: { icon: ExclamationTriangleIcon, label: "Failed", tone: "status-failure" },
-  skipped: { icon: MinusCircleIcon, label: "Skipped", tone: "status-skipped" },
+  pending: {
+    badgeVariant: "pending",
+    cardClass: "border-border bg-surface",
+    icon: ClockIcon,
+    iconClass: "border-border text-status-pending",
+    label: "Pending",
+  },
+  running: {
+    badgeVariant: "running",
+    cardClass: "border-status-running-border bg-surface",
+    icon: ArrowPathIcon,
+    iconClass: "border-status-running text-status-running",
+    label: "Running",
+  },
+  success: {
+    badgeVariant: "success",
+    cardClass: "border-border bg-surface",
+    icon: CheckCircleIcon,
+    iconClass: "border-status-success-border text-status-success",
+    label: "Succeeded",
+  },
+  failed: {
+    badgeVariant: "destructive",
+    cardClass: "border-status-failure-border bg-surface",
+    icon: ExclamationTriangleIcon,
+    iconClass: "border-status-failure-border text-status-failure",
+    label: "Failed",
+  },
+  skipped: {
+    badgeVariant: "skipped",
+    cardClass: "border-border bg-status-skipped-surface",
+    icon: MinusCircleIcon,
+    iconClass: "border-border text-status-skipped",
+    label: "Skipped",
+  },
 } as const satisfies Record<
   StepExecution["status"],
-  { readonly icon: AppIcon; readonly label: string; readonly tone: string }
+  {
+    readonly badgeVariant: NonNullable<BadgeProps["variant"]>;
+    readonly cardClass: string;
+    readonly icon: AppIcon;
+    readonly iconClass: string;
+    readonly label: string;
+  }
 >;
 
 function WorkflowStep({
@@ -68,40 +105,43 @@ function WorkflowStep({
 
   return (
     <li
-      className={`workflow-step ${presentation.tone} relative grid min-w-0 grid-cols-[2.5rem_minmax(0,1fr)] gap-3 pb-4 last:pb-0`}
+      className="relative grid min-w-0 grid-cols-[2.5rem_minmax(0,1fr)] gap-3 pb-4 last:pb-0"
     >
       {index === total - 1 ? null : (
         <span
           aria-hidden="true"
-          className="absolute left-[1.22rem] top-10 h-[calc(100%-1.5rem)] w-px bg-[var(--border-strong)]"
+          className="absolute left-[1.22rem] top-10 h-[calc(100%-1.5rem)] w-px bg-border-strong"
         />
       )}
-      <span className="workflow-step-icon relative z-10 grid size-10 place-items-center rounded-[var(--radius-control)] border bg-[var(--surface)] shadow-[var(--shadow-control)]">
+      <span
+        className={`relative z-10 grid size-10 place-items-center rounded-control border bg-surface shadow-control ${presentation.iconClass}`}
+      >
         <SystemIcon aria-hidden="true" className="size-5" />
       </span>
-      <div className="workflow-step-card min-w-0 rounded-[var(--radius-control)] border bg-[var(--surface)] px-4 py-3 shadow-[var(--shadow-control)]">
+      <div
+        className={`min-w-0 rounded-control border px-4 py-3 shadow-control ${presentation.cardClass}`}
+      >
         <div className="flex flex-wrap items-start justify-between gap-2">
           <h4 className="font-semibold leading-6">{step.name}</h4>
           <StatusBadge
-            className="workflow-step-status"
             icon={StatusIcon}
             spin={status === "running"}
-            variant="secondary"
+            variant={presentation.badgeVariant}
           >
             {presentation.label}
           </StatusBadge>
         </div>
-        <p className="mt-1 text-sm leading-6 text-[var(--muted-foreground)]">{step.description}</p>
-        <p className="mt-2 text-xs font-semibold uppercase tracking-[0.1em] text-[var(--muted-foreground)]">
+        <p className="mt-1 text-sm leading-6 text-muted-foreground">{step.description}</p>
+        <p className="mt-2 text-xs font-semibold uppercase tracking-action text-muted-foreground">
           {step.actionLabel}
         </p>
         {execution?.resultSummary ? (
-          <p className="mt-2 text-sm font-medium text-[var(--status-success)]">
+          <p className="mt-2 text-sm font-medium text-status-success">
             {execution.resultSummary}
           </p>
         ) : null}
         {execution?.failureReason ? (
-          <p className="mt-2 text-sm font-medium text-[var(--status-failure)]">
+          <p className="mt-2 text-sm font-medium text-status-failure">
             {execution.failureReason}
           </p>
         ) : null}
@@ -126,17 +166,17 @@ export function WorkflowDetail({
       aria-labelledby="selected-workflow-title"
       className={`workflow-layout mt-6 grid min-w-0 gap-5 lg:grid-cols-[minmax(0,1fr)_19rem] ${execution === undefined ? "" : "workflow-layout-active"}`}
     >
-      <div className="workflow-intro min-w-0 rounded-[var(--radius-panel)] border border-[var(--border)] bg-[var(--surface)] p-5 shadow-[var(--shadow-panel)] sm:p-6">
+      <div className="workflow-intro min-w-0 rounded-panel border border-border bg-surface p-5 shadow-panel sm:p-6">
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div className="min-w-0">
-            <p className="text-sm font-semibold text-[var(--primary)]">{workflow.category}</p>
+            <p className="text-sm font-semibold text-primary">{workflow.category}</p>
             <h2
-              className="mt-1 text-2xl font-semibold tracking-[-0.025em]"
+              className="mt-1 text-2xl font-semibold tracking-heading-tight"
               id="selected-workflow-title"
             >
               {workflow.name}
             </h2>
-            <p className="mt-2 max-w-2xl leading-7 text-[var(--muted-foreground)]">
+            <p className="mt-2 max-w-2xl leading-7 text-muted-foreground">
               {workflow.description}
             </p>
           </div>
@@ -148,9 +188,9 @@ export function WorkflowDetail({
             Expected {workflow.expectedScenario}
           </StatusBadge>
         </div>
-        <div className="mt-5 flex gap-2 rounded-[var(--radius-control)] border border-[var(--border)] bg-[var(--surface-subtle)] px-4 py-3 text-sm">
+        <div className="mt-5 flex gap-2 rounded-control border border-border bg-surface-subtle px-4 py-3 text-sm">
           <span className="shrink-0 font-semibold">Trigger</span>
-          <span className="min-w-0 break-words text-[var(--muted-foreground)]">
+          <span className="min-w-0 break-words text-muted-foreground">
             {workflow.triggerDescription}
           </span>
         </div>
@@ -166,15 +206,15 @@ export function WorkflowDetail({
         <RequestContextPanel request={execution?.request ?? workflow.request} />
       </div>
 
-      <div className="workflow-canvas workflow-steps min-w-0 rounded-[var(--radius-panel)] border border-[var(--border)] p-4 shadow-[var(--shadow-panel)] sm:p-5">
+      <div className="workflow-canvas workflow-steps min-w-0 rounded-panel border border-border p-4 shadow-panel sm:p-5">
         <div className="flex items-end justify-between gap-4">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.12em] text-[var(--primary)]">
+            <p className="text-xs font-semibold uppercase tracking-label text-primary">
               Execution path
             </p>
             <h3 className="mt-1 text-lg font-semibold">Workflow steps</h3>
           </div>
-          <span className="text-sm font-medium text-[var(--muted-foreground)]">
+          <span className="text-sm font-medium text-muted-foreground">
             {workflow.steps.length} steps
           </span>
         </div>

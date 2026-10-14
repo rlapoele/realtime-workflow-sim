@@ -44,18 +44,18 @@ export function ExecutionConsole({
   return (
     <section
       aria-labelledby="execution-log-title"
-      className="overflow-hidden rounded-[var(--radius-panel)] border border-[var(--console-border)] bg-[var(--console-background)] text-[var(--console-foreground)] shadow-[var(--shadow-panel)]"
+      className="overflow-hidden rounded-panel border border-console-border bg-console-background text-console-foreground shadow-panel"
     >
-      <div className="flex min-h-14 flex-wrap items-center justify-between gap-3 border-b border-[var(--console-border)] px-4 py-3 sm:px-5">
+      <div className="flex min-h-14 flex-wrap items-center justify-between gap-3 border-b border-console-border px-4 py-3 sm:px-5">
         <div className="flex min-w-0 items-center gap-3">
-          <span className="grid size-8 shrink-0 place-items-center rounded-[var(--radius-control)] bg-white/8 text-[var(--decorative)]">
+          <span className="grid size-8 shrink-0 place-items-center rounded-control bg-white/8 text-decorative">
             <CommandLineIcon aria-hidden="true" className="size-4" />
           </span>
           <div className="min-w-0">
             <h3 className="text-sm font-semibold" id="execution-log-title">
               Execution log
             </h3>
-            <p className="text-xs text-[var(--console-muted)]">
+            <p className="text-xs text-console-muted">
               {isFollowing ? "Following latest output" : "Live follow paused"}
             </p>
           </div>
@@ -74,7 +74,7 @@ export function ExecutionConsole({
       </div>
       <div
         aria-label="Execution log output"
-        className="max-h-80 min-h-48 overflow-auto px-4 py-4 font-mono text-[0.8125rem] leading-6 outline-none focus-visible:ring-3 focus-visible:ring-inset focus-visible:ring-[var(--focus-console)] sm:px-5"
+        className="max-h-80 min-h-48 overflow-auto px-4 py-4 font-mono text-[0.8125rem] leading-6 outline-none focus-visible:ring-3 focus-visible:ring-inset focus-visible:ring-focus-console sm:px-5"
         onScroll={(event) => setIsFollowing(isNearBottom(event.currentTarget))}
         ref={outputRef}
         role="region"
@@ -85,10 +85,10 @@ export function ExecutionConsole({
             {logs.map((log, index) =>
               log.text.length === 0 ? null : (
                 <li className="min-w-0" key={workflow.steps[index]!.id}>
-                  <p className="mb-1 text-xs font-semibold uppercase tracking-[0.12em] text-[var(--decorative)]">
+                  <p className="mb-1 text-xs font-semibold uppercase tracking-label text-decorative">
                     {log.name}
                   </p>
-                  <pre className="min-w-0 whitespace-pre-wrap break-words text-[var(--console-foreground)]">
+                  <pre className="min-w-0 whitespace-pre-wrap break-words text-console-foreground">
                     {log.text}
                   </pre>
                 </li>
@@ -96,7 +96,7 @@ export function ExecutionConsole({
             )}
           </ol>
         ) : (
-          <p className="text-[var(--console-muted)]">
+          <p className="text-console-muted">
             Logs will appear here after the simulated workflow starts.
           </p>
         )}

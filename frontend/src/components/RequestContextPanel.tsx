@@ -21,12 +21,12 @@ export function RequestContextPanel({ request }: { readonly request: RequestCont
   return (
     <aside aria-label="Request context" className="min-w-0">
       <details
-        className="group overflow-hidden rounded-[var(--radius-panel)] border border-[var(--border)] bg-[var(--surface)] shadow-[var(--shadow-panel)]"
+        className="group overflow-hidden rounded-panel border border-border bg-surface shadow-panel"
         open
       >
-        <summary className="flex min-h-14 cursor-pointer list-none items-center justify-between gap-3 px-4 py-3 outline-none marker:hidden focus-visible:ring-3 focus-visible:ring-inset focus-visible:ring-[var(--focus-ring)] sm:px-5">
+        <summary className="flex min-h-14 cursor-pointer list-none items-center justify-between gap-3 px-4 py-3 outline-none marker:hidden focus-visible:ring-3 focus-visible:ring-inset focus-visible:ring-focus-ring sm:px-5">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.12em] text-[var(--primary)]">
+            <p className="text-xs font-semibold uppercase tracking-label text-primary">
               Fictional request
             </p>
             <h3 className="mt-0.5 text-base font-semibold">Request context</h3>
@@ -40,18 +40,18 @@ export function RequestContextPanel({ request }: { readonly request: RequestCont
             </Badge>
             <ChevronDownIcon
               aria-hidden="true"
-              className="size-4 shrink-0 text-[var(--muted-foreground)] transition group-open:rotate-180 motion-reduce:transition-none"
+              className="size-4 shrink-0 text-muted-foreground transition group-open:rotate-180 motion-reduce:transition-none"
             />
           </div>
         </summary>
-        <div className="border-t border-[var(--border)] px-4 pb-5 pt-4 sm:px-5">
-          <div className="flex items-center gap-3 border-b border-[var(--border)] pb-4">
-            <span className="grid size-11 shrink-0 place-items-center rounded-full bg-[var(--accent)] text-sm font-bold text-[var(--accent-foreground)]">
+        <div className="border-t border-border px-4 pb-5 pt-4 sm:px-5">
+          <div className="flex items-center gap-3 border-b border-border pb-4">
+            <span className="grid size-11 shrink-0 place-items-center rounded-full bg-accent text-sm font-bold text-accent-foreground">
               {request.subject.initials}
             </span>
             <div className="min-w-0">
               <p className="font-semibold">{request.subject.name}</p>
-              <p className="text-sm leading-5 text-[var(--muted-foreground)]">
+              <p className="text-sm leading-5 text-muted-foreground">
                 {[request.subject.role, request.subject.department].filter(Boolean).join(" · ")}
               </p>
             </div>
@@ -59,17 +59,17 @@ export function RequestContextPanel({ request }: { readonly request: RequestCont
           <dl className="mt-4 grid gap-4 text-sm">
             {request.subject.manager === undefined ? null : (
               <div>
-                <dt className="font-medium text-[var(--muted-foreground)]">Manager</dt>
+                <dt className="font-medium text-muted-foreground">Manager</dt>
                 <dd className="mt-1 font-semibold">{request.subject.manager}</dd>
               </div>
             )}
             <div>
-              <dt className="font-medium text-[var(--muted-foreground)]">Source</dt>
+              <dt className="font-medium text-muted-foreground">Source</dt>
               <dd className="mt-1 break-words font-semibold">{request.source}</dd>
             </div>
             {Object.entries(request.details).map(([key, value]) => (
               <div key={key}>
-                <dt className="font-medium text-[var(--muted-foreground)]">{labelFromKey(key)}</dt>
+                <dt className="font-medium text-muted-foreground">{labelFromKey(key)}</dt>
                 <dd className="mt-1 break-words font-semibold">{formatDetail(value)}</dd>
               </div>
             ))}

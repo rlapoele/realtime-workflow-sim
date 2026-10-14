@@ -19,7 +19,7 @@ function WorkflowPicker({
 
   return (
     <div className="min-w-0 flex-1">
-      <label className="mb-2 block text-sm font-semibold text-[var(--foreground)]" id="workflow-label">
+      <label className="mb-2 block text-sm font-semibold text-foreground" id="workflow-label">
         Workflow
       </label>
       <Select
@@ -65,13 +65,13 @@ export function WorkflowControls({
   return (
     <section
       aria-labelledby="workflow-controls-title"
-      className="rounded-[var(--radius-panel)] border border-[var(--border-strong)] bg-[var(--surface)] p-4 shadow-[var(--shadow-panel)] sm:p-5"
+      className="rounded-panel border border-border-strong bg-surface p-4 shadow-panel sm:p-5"
     >
       <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
         <h2 className="text-base font-semibold" id="workflow-controls-title">
           Run a workflow
         </h2>
-        <p className="text-xs font-medium text-[var(--muted-foreground)]">
+        <p className="text-xs font-medium text-muted-foreground">
           Fictional data · simulated actions
         </p>
       </div>

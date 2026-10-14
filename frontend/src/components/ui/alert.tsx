@@ -1,11 +1,11 @@
 import * as React from "react";
 
 const variantClasses = {
-  default: "border-[var(--border)] bg-[var(--surface)] text-[var(--foreground)]",
+  default: "border-border bg-surface text-foreground",
   warning:
-    "border-[var(--status-warning-border)] bg-[var(--status-warning-surface)] text-[var(--foreground)]",
+    "border-status-warning-border bg-status-warning-surface text-foreground",
   destructive:
-    "border-[var(--status-failure-border)] bg-[var(--status-failure-surface)] text-[var(--status-failure)]",
+    "border-status-failure-border bg-status-failure-surface text-status-failure",
 } as const;
 
 export interface AlertProps extends React.ComponentPropsWithoutRef<"div"> {
@@ -18,7 +18,7 @@ export const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert
 ) {
   return (
     <div
-      className={`relative w-full rounded-[var(--radius-panel)] border p-5 shadow-[var(--shadow-panel)] ${variantClasses[variant]} ${className ?? ""}`}
+      className={`relative w-full rounded-panel border p-5 shadow-panel ${variantClasses[variant]} ${className ?? ""}`}
       data-slot="alert"
       ref={ref}
       {...props}

@@ -93,12 +93,12 @@ export function WorkflowCatalogue({ apiUrl }: WorkflowCatalogueProps) {
     return (
       <div
         aria-busy="true"
-        className="rounded-[var(--radius-panel)] border border-[var(--border)] bg-[var(--surface)] p-8 text-center shadow-[var(--shadow-panel)]"
+        className="rounded-panel border border-border bg-surface p-8 text-center shadow-panel"
         role="status"
       >
         <CircleStackIcon
           aria-hidden="true"
-          className="mx-auto size-7 animate-pulse text-[var(--primary)] motion-reduce:animate-none"
+          className="mx-auto size-7 animate-pulse text-primary motion-reduce:animate-none"
         />
         <p className="mt-3 font-medium">Loading workflows…</p>
       </div>
@@ -116,10 +116,10 @@ export function WorkflowCatalogue({ apiUrl }: WorkflowCatalogueProps) {
 
   if (catalogueQuery.data.length === 0) {
     return (
-      <div className="rounded-[var(--radius-panel)] border border-[var(--border)] bg-[var(--surface)] p-8 text-center shadow-[var(--shadow-panel)]">
-        <UserIcon aria-hidden="true" className="mx-auto size-7 text-[var(--muted-foreground)]" />
+      <div className="rounded-panel border border-border bg-surface p-8 text-center shadow-panel">
+        <UserIcon aria-hidden="true" className="mx-auto size-7 text-muted-foreground" />
         <p className="mt-3 font-semibold">No workflows are available.</p>
-        <p className="mt-1 text-sm text-[var(--muted-foreground)]">
+        <p className="mt-1 text-sm text-muted-foreground">
           Add a validated workflow seed to populate this catalogue.
         </p>
       </div>
@@ -156,7 +156,7 @@ export function WorkflowCatalogue({ apiUrl }: WorkflowCatalogueProps) {
       {missingExecution ? (
         <Alert className="mt-5" role="alert" variant="warning">
           <AlertTitle>This execution is no longer available.</AlertTitle>
-          <AlertDescription className="text-[var(--muted-foreground)]">
+          <AlertDescription className="text-muted-foreground">
             The local API may have restarted or removed older completed runs.
           </AlertDescription>
           <Button className="mt-4" onClick={clearExecution} variant="warning">

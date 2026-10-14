@@ -20,34 +20,34 @@ interface StatusPresentation {
 }
 
 const executionPresentation: Record<WorkflowExecution["status"], StatusPresentation> = {
-  pending: { icon: ClockIcon, label: "Execution queued", tone: "text-[var(--status-pending)]" },
-  running: { icon: ArrowPathIcon, label: "Execution running", tone: "text-[var(--status-running)]" },
+  pending: { icon: ClockIcon, label: "Execution queued", tone: "text-status-pending" },
+  running: { icon: ArrowPathIcon, label: "Execution running", tone: "text-status-running" },
   success: {
     icon: CheckCircleIcon,
     label: "Execution succeeded",
-    tone: "text-[var(--status-success)]",
+    tone: "text-status-success",
   },
   failed: {
     icon: ExclamationTriangleIcon,
     label: "Execution failed",
-    tone: "text-[var(--status-failure)]",
+    tone: "text-status-failure",
   },
 };
 
 const connectionPresentation: Record<ConnectionState, StatusPresentation> = {
-  connecting: { icon: ArrowPathIcon, label: "Connecting", tone: "text-[var(--status-running)]" },
-  connected: { icon: SignalIcon, label: "Connected", tone: "text-[var(--status-success)]" },
+  connecting: { icon: ArrowPathIcon, label: "Connecting", tone: "text-status-running" },
+  connected: { icon: SignalIcon, label: "Connected", tone: "text-status-success" },
   reconnecting: {
     icon: ArrowPathIcon,
     label: "Reconnecting",
-    tone: "text-[var(--status-warning)]",
+    tone: "text-status-warning",
   },
   disconnected: {
     icon: SignalSlashIcon,
     label: "Disconnected",
-    tone: "text-[var(--status-failure)]",
+    tone: "text-status-failure",
   },
-  completed: { icon: CheckCircleIcon, label: "Completed", tone: "text-[var(--status-success)]" },
+  completed: { icon: CheckCircleIcon, label: "Completed", tone: "text-status-success" },
 };
 
 function formatDuration(milliseconds: number): string {
@@ -75,8 +75,8 @@ function useElapsedDuration(execution: WorkflowExecution): string {
 function Fact({ label, value }: { readonly label: string; readonly value: string }) {
   return (
     <div className="min-w-0">
-      <dt className="text-xs font-medium text-[var(--muted-foreground)]">{label}</dt>
-      <dd className="mt-1 text-sm font-semibold text-[var(--foreground)]">{value}</dd>
+      <dt className="text-xs font-medium text-muted-foreground">{label}</dt>
+      <dd className="mt-1 text-sm font-semibold text-foreground">{value}</dd>
     </div>
   );
 }
@@ -99,18 +99,18 @@ export function ExecutionSummary({
   return (
     <section
       aria-labelledby="execution-status-title"
-      className="rounded-[var(--radius-panel)] border border-[var(--border-strong)] bg-[var(--surface)] shadow-[var(--shadow-panel)] overflow-hidden"
+      className="overflow-hidden rounded-panel border border-border-strong bg-surface shadow-panel"
     >
-      <div className="flex flex-col gap-4 border-b border-[var(--border)] px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-5">
+      <div className="flex flex-col gap-4 border-b border-border px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-5">
         <div aria-atomic="true" aria-live="polite" className="flex items-center gap-3" role="status">
-          <span className={`grid size-10 place-items-center rounded-full bg-[var(--surface-subtle)] ${status.tone}`}>
+          <span className={`grid size-10 place-items-center rounded-full bg-surface-subtle ${status.tone}`}>
             <StatusIcon
               aria-hidden="true"
               className={`size-5 ${execution.status === "running" ? "animate-spin motion-reduce:animate-none" : ""}`}
             />
           </span>
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.12em] text-[var(--muted-foreground)]">
+            <p className="text-xs font-semibold uppercase tracking-label text-muted-foreground">
               Execution status
             </p>
             <h3 className={`mt-0.5 text-lg font-semibold ${status.tone}`} id="execution-status-title">
@@ -134,8 +134,8 @@ export function ExecutionSummary({
         <Fact label="Steps complete" value={`${completedSteps} of ${execution.steps.length}`} />
         <Fact label="Elapsed" value={elapsed} />
         <div className="col-span-2 min-w-0 sm:col-span-2">
-          <dt className="text-xs font-medium text-[var(--muted-foreground)]">Execution ID</dt>
-          <dd className="mt-1 break-all font-mono text-xs font-semibold text-[var(--foreground)]">
+          <dt className="text-xs font-medium text-muted-foreground">Execution ID</dt>
+          <dd className="mt-1 break-all font-mono text-xs font-semibold text-foreground">
             Execution {execution.id}
           </dd>
         </div>
@@ -147,7 +147,7 @@ export function ExecutionSummary({
         value={completedSteps}
       />
       {execution.failureReason === undefined ? null : (
-        <p className="border-t border-[var(--border)] px-4 py-3 text-sm font-medium text-[var(--status-failure)] sm:px-5">
+        <p className="border-t border-border px-4 py-3 text-sm font-medium text-status-failure sm:px-5">
           {execution.failureReason}
         </p>
       )}

@@ -3,15 +3,14 @@ import * as React from "react";
 
 const variantClasses = {
   default:
-    "bg-[var(--primary)] text-[var(--primary-foreground)] shadow-[var(--shadow-control)] hover:bg-[var(--primary-hover)] focus-visible:ring-[var(--focus-ring)] disabled:bg-[var(--disabled)] disabled:text-[var(--disabled-foreground)]",
+    "bg-primary text-primary-foreground shadow-control hover:bg-primary-hover focus-visible:ring-focus-ring disabled:bg-disabled disabled:text-disabled-foreground",
   outline:
-    "border border-[var(--border-strong)] bg-[var(--surface)] text-[var(--foreground)] shadow-[var(--shadow-control)] hover:bg-[var(--surface-subtle)] focus-visible:ring-[var(--focus-ring)]",
+    "border border-border-strong bg-surface text-foreground shadow-control hover:bg-surface-subtle focus-visible:ring-focus-ring",
   warning:
-    "border border-[var(--status-warning)] bg-transparent text-[var(--status-warning)] hover:bg-[var(--status-warning-surface)] focus-visible:ring-[var(--focus-warning)]",
+    "border border-status-warning bg-transparent text-status-warning hover:bg-status-warning-surface focus-visible:ring-focus-warning",
   console:
-    "border border-[var(--console-border-strong)] bg-white/6 text-[var(--console-foreground)] hover:bg-white/10 focus-visible:ring-[var(--focus-console)]",
-  ghost:
-    "text-[var(--foreground)] hover:bg-[var(--surface-subtle)] focus-visible:ring-[var(--focus-ring)]",
+    "border border-console-border-strong bg-white/6 text-console-foreground hover:bg-white/10 focus-visible:ring-focus-console",
+  ghost: "text-foreground hover:bg-surface-subtle focus-visible:ring-focus-ring",
 } as const;
 
 const sizeClasses = {
@@ -31,7 +30,7 @@ export const Button = React.forwardRef<HTMLElement, ButtonProps>(function Button
 ) {
   return (
     <ButtonPrimitive
-      className={`inline-flex items-center justify-center gap-2 rounded-[var(--radius-control)] font-bold outline-none transition focus-visible:ring-3 disabled:cursor-not-allowed motion-reduce:transition-none ${variantClasses[variant]} ${sizeClasses[size]} ${className ?? ""}`}
+      className={`inline-flex items-center justify-center gap-2 rounded-control font-bold outline-none transition focus-visible:ring-3 disabled:cursor-not-allowed motion-reduce:transition-none ${variantClasses[variant]} ${sizeClasses[size]} ${className ?? ""}`}
       data-slot="button"
       ref={ref}
       type={type}

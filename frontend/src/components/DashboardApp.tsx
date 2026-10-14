@@ -11,31 +11,31 @@ export interface DashboardAppProps {
 
 function DashboardShell({ apiUrl }: DashboardAppProps) {
   return (
-    <div className="min-h-screen bg-[var(--background)] text-[var(--foreground)]">
+    <div className="min-h-screen bg-background text-foreground">
       <a
-        className="fixed left-4 top-3 z-[100] -translate-y-20 rounded-[var(--radius-control)] bg-[var(--surface)] px-4 py-3 text-sm font-semibold text-[var(--foreground)] shadow-lg outline-none transition focus:translate-y-0 focus:ring-3 focus:ring-[var(--focus-ring)] motion-reduce:transition-none"
+        className="fixed left-4 top-3 z-[100] -translate-y-20 rounded-control bg-surface px-4 py-3 text-sm font-semibold text-foreground shadow-lg outline-none transition focus:translate-y-0 focus:ring-3 focus:ring-focus-ring motion-reduce:transition-none"
         href="#main-content"
       >
         Skip to main content
       </a>
-      <header className="border-b border-[var(--brand-border)] bg-[var(--brand)] text-[var(--brand-foreground)]">
+      <header className="border-b border-brand-border bg-brand text-brand-foreground">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3 sm:px-6">
           <a
-            className="flex min-h-11 items-center gap-3 rounded-[var(--radius-control)] font-semibold tracking-[-0.015em] outline-none focus-visible:ring-3 focus-visible:ring-[var(--focus-console)]"
+            className="flex min-h-11 items-center gap-3 rounded-control font-semibold tracking-brand-tight outline-none focus-visible:ring-3 focus-visible:ring-focus-console"
             href="/"
           >
-            <span className="grid size-8 place-items-center rounded-[var(--radius-control)] border border-white/15 bg-white/8">
-              <CircleStackIcon aria-hidden="true" className="size-5 text-[var(--decorative)]" />
+            <span className="grid size-8 place-items-center rounded-control border border-white/15 bg-white/8">
+              <CircleStackIcon aria-hidden="true" className="size-5 text-decorative" />
             </span>
             <span>
-              AgentFlow <span className="text-[var(--console-muted)]">Live</span>
+              AgentFlow <span className="text-console-muted">Live</span>
             </span>
           </a>
           <Badge
-            className="min-h-8 gap-2 px-3 font-bold uppercase tracking-[0.1em]"
+            className="min-h-8 gap-2 px-3 font-bold uppercase tracking-action"
             variant="accent"
           >
-            <span aria-hidden="true" className="size-1.5 rounded-full bg-[var(--brand)]" />
+            <span aria-hidden="true" className="size-1.5 rounded-full bg-brand" />
             Simulation
           </Badge>
         </div>
@@ -47,16 +47,16 @@ function DashboardShell({ apiUrl }: DashboardAppProps) {
         tabIndex={-1}
       >
         <section aria-labelledby="page-title">
-          <p className="mb-2 text-xs font-semibold uppercase tracking-[0.14em] text-[var(--primary)]">
+          <p className="mb-2 text-xs font-semibold uppercase tracking-eyebrow text-primary">
             Service desk simulation
           </p>
           <h1
-            className="max-w-3xl text-3xl font-semibold tracking-[-0.035em] sm:text-4xl"
+            className="max-w-3xl text-3xl font-semibold tracking-title-tight sm:text-4xl"
             id="page-title"
           >
             Workflow executions
           </h1>
-          <p className="mt-3 max-w-2xl text-[0.9375rem] leading-7 text-[var(--muted-foreground)] sm:text-base">
+          <p className="mt-3 max-w-2xl text-[0.9375rem] leading-7 text-muted-foreground sm:text-base">
             Run fictional service workflows and inspect each deterministic step as it happens. No
             external systems are connected.
           </p>

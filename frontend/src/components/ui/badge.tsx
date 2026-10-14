@@ -1,18 +1,17 @@
 import * as React from "react";
 
 const variantClasses = {
-  default: "border-transparent bg-[var(--primary)] text-[var(--primary-foreground)]",
-  accent:
-    "border-[color:color-mix(in_srgb,var(--decorative)_35%,transparent)] bg-[var(--decorative)] text-[var(--brand)]",
-  surface: "border-transparent bg-[var(--surface-subtle)]",
-  secondary: "border-transparent bg-[var(--surface-subtle)] text-[var(--muted-foreground)]",
-  success:
-    "border-transparent bg-[var(--status-success-surface)] text-[var(--status-success)]",
-  warning:
-    "border-transparent bg-[var(--status-warning-surface)] text-[var(--status-warning)]",
-  destructive:
-    "border-transparent bg-[var(--status-failure-surface)] text-[var(--status-failure)]",
-  outline: "border-[var(--border-strong)] text-[var(--foreground)]",
+  default: "border-transparent bg-primary text-primary-foreground",
+  accent: "border-decorative-border bg-decorative text-brand",
+  surface: "border-transparent bg-surface-subtle",
+  secondary: "border-transparent bg-surface-subtle text-muted-foreground",
+  pending: "border-transparent bg-status-pending-surface text-status-pending",
+  running: "border-transparent bg-status-running-surface text-status-running",
+  success: "border-transparent bg-status-success-surface text-status-success",
+  warning: "border-transparent bg-status-warning-surface text-status-warning",
+  destructive: "border-transparent bg-status-failure-surface text-status-failure",
+  skipped: "border-transparent bg-status-skipped-border text-status-skipped",
+  outline: "border-border-strong text-foreground",
 } as const;
 
 export interface BadgeProps extends React.ComponentPropsWithoutRef<"span"> {

@@ -21,7 +21,8 @@ This file is the single source of truth for which phase **Proceed with the next 
 | 5 — Production-quality responsive interface | complete | `tasks/evidence/phase-5.md` | Reviewed through Phase 6 authorization |
 | 6 — Hardening and release-candidate verification | complete | `tasks/evidence/phase-6.md` | Reviewed through Phase 6.10 authorization |
 | 6.10 — Base UI component normalization | complete | `tasks/evidence/phase-6.10.md` | Reviewed through Phase 6.20 authorization |
-| 6.20 — Type-safe icon contracts | complete | `tasks/evidence/phase-6.20.md` | Awaiting user review |
+| 6.20 — Type-safe icon contracts | complete | `tasks/evidence/phase-6.20.md` | Reviewed through Phase 6.30 authorization |
+| 6.30 — Tailwind theme and cascade normalization | complete | `tasks/evidence/phase-6.30.md` | Awaiting user review |
 | 7 — Railway owner handoff | ready | — | — |
 
 ## Resume rule

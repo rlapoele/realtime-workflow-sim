@@ -236,6 +236,35 @@ Only work on the phase marked current in `tasks/progress.md`. Check boxes requir
 
 **Dependencies:** Phase 6.10.
 
+## Phase 6.30: Tailwind theme and cascade normalization
+
+**Outcome:** Semantic design tokens drive named Tailwind utilities, while custom CSS has explicit cascade ownership and arbitrary values remain only for runtime geometry or isolated layout needs.
+
+**Tasks:**
+
+- [x] Bridge the existing semantic color variables through Tailwind v4 `@theme inline` and expose named radius, shadow, and tracking utilities.
+- [x] Replace repeated semantic CSS-variable arbitrary values in frontend components with named theme utilities.
+- [x] Move global element rules into `@layer base` and workflow structure/progress rules into `@layer components`.
+- [x] Remove workflow status styling's dependency on unlayered descendant selectors by using exhaustive feature-local presentation classes and semantic Badge variants.
+- [x] Add an automated style-boundary guard while retaining Base UI runtime positioning variables and justified one-off geometry.
+
+**Acceptance criteria:**
+
+- [x] Colors, radii, shadows, and repeated letter-spacing values used by components have readable semantic utility names backed by the canonical tokens.
+- [x] Custom base and component CSS uses explicit cascade layers without changing the dashboard's visual states or accessibility semantics.
+- [x] Arbitrary CSS-variable utilities are limited to Base UI runtime geometry variables that cannot be represented as static theme tokens.
+- [x] The workflow engine, API contracts, SSE protocol, responsive order, and specialized console behavior are unchanged.
+
+**Verification:**
+
+- [x] The style-boundary test, complete frontend suite, strict typecheck, and frontend production build pass.
+- [x] The complete repository verification gate passes.
+- [x] A deterministic failure reaches terminal state with success, failure, and skipped treatments intact and no browser console errors or warnings.
+- [x] Desktop and 390 px layouts are visually reviewed; 390 px and 320 px have no page-level horizontal overflow and keyboard focus remains visible.
+- [x] `git diff --check` and a scoped diff review pass when Git is available.
+
+**Dependencies:** Phase 6.20.
+
 ## Phase 7: Railway owner handoff
 
 **Outcome:** The owner can deploy two services from one GitHub monorepo using verified, current instructions; Codex does not perform deployment.
