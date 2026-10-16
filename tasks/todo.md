@@ -271,27 +271,27 @@ Only work on the phase marked current in `tasks/progress.md`. Check boxes requir
 
 **Tasks:**
 
-- [ ] Re-check current official Railway guidance relevant to monorepos, build/start commands, variables, public domains, health checks, and watch paths.
-- [ ] Document creation of backend and frontend services from the same repository with repository-root build access.
-- [ ] Document GitHub with `dev` as default, Railway service source branches set to `releases`, and `main` retained as the release backup.
-- [ ] Document exact build/start commands, variables, build-time `PUBLIC_API_URL`, frontend/backend public domains, CORS sequencing, and `/health`.
-- [ ] Document watch paths so root/shared/lockfile changes rebuild both and seed changes rebuild backend.
-- [ ] Provide post-deployment smoke checks, troubleshooting, cost-awareness notes suitable for a Hobby account, and rollback/redeploy guidance without claiming a live deployment.
+- [x] Re-check current official Railway guidance relevant to monorepos, build/start commands, variables, public domains, health checks, and watch paths.
+- [x] Document creation of backend and frontend services from the same repository with repository-root build access.
+- [x] Document GitHub with `dev` as default, Railway service source branches set to `releases`, and `main` retained as the release backup.
+- [x] Document exact build/start commands, variables, build-time `PUBLIC_API_URL`, frontend/backend public domains, CORS sequencing, and `/health`.
+- [x] Document watch paths so root/shared/lockfile changes rebuild both and seed changes rebuild backend.
+- [x] Provide post-deployment smoke checks, troubleshooting, cost-awareness notes suitable for a Hobby account, and rollback/redeploy guidance without claiming a live deployment.
 
 **Acceptance criteria:**
 
-- [ ] Instructions clearly distinguish actions the owner performs from verified local facts.
-- [ ] Neither service uses an isolated Root Directory that loses `/shared`.
-- [ ] The two-pass URL/CORS/build-time-variable setup is unambiguous.
-- [ ] No credentials are requested, stored, or exposed and no Railway/GitHub mutation is performed.
-- [ ] The guide states that promoting/pushing `releases` triggers production deployment and therefore always requires explicit owner approval.
+- [x] Instructions clearly distinguish actions the owner performs from verified local facts.
+- [x] Neither service uses an isolated Root Directory that loses `/shared`.
+- [x] The two-pass URL/CORS/build-time-variable setup is unambiguous.
+- [x] No credentials are requested, stored, or exposed and no Railway/GitHub mutation is performed.
+- [x] The guide states that promoting/pushing `releases` triggers production deployment and therefore always requires explicit owner approval.
 
 **Verification:**
 
-- [ ] Every documented command matches package scripts and was locally verified where applicable.
-- [ ] Railway-specific claims cite current official documentation.
-- [ ] A dry-run review traces a new owner from repository connection to post-deploy smoke tests.
-- [ ] Final README links all deployment and limitation documentation.
+- [x] Every documented command matches package scripts and was locally verified where applicable.
+- [x] Railway-specific claims cite current official documentation.
+- [x] A dry-run review traces a new owner from repository connection to post-deploy smoke tests.
+- [x] Final README links all deployment and limitation documentation.
 
 **Dependencies:** Phase 6.
 
@@ -299,6 +299,6 @@ Phase 7 begins only after the local guide and local release-candidate checks are
 
 ## Final checkpoint
 
-- [ ] All phase evidence files exist and all phase acceptance criteria are checked.
-- [ ] `tasks/progress.md` marks the project complete rather than naming another phase.
-- [ ] The user, not Codex, decides whether and when to deploy.
+- [x] All phase evidence files exist and all phase acceptance criteria are checked.
+- [x] `tasks/progress.md` marks the project complete rather than naming another phase.
+- [x] The user, not Codex, decides whether and when to deploy.

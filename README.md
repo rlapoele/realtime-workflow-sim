@@ -63,7 +63,7 @@ The root process stops both applications when you press `Ctrl+C`.
 
 ## Verification
 
-For the complete owner-facing setup, production smoke procedure, troubleshooting, and manual browser matrix, use the [local release-candidate test guide](docs/local-testing.md).
+For the complete owner-facing setup, production smoke procedure, troubleshooting, manual browser matrix, and intended prototype limitations, use the [local release-candidate test guide](docs/local-testing.md).
 
 Run the automated checks:
 
@@ -104,7 +104,7 @@ Read `AGENTS.md`, `docs/specification.md`, `tasks/plan.md`, `tasks/todo.md`, and
 ## Branch and deployment boundary
 
 - `dev` is the GitHub default and routine implementation branch.
-- `releases` is reserved for explicitly approved production-quality revisions and will eventually be Railway's source branch.
+- `releases` is reserved for explicitly approved production-quality revisions and is Railway's source branch.
 - `main` is the backup branch for accepted release state.
 
-Codex does not deploy the application or mutate Railway configuration. Owner-run deployment instructions are deferred until the locally verified release candidate reaches Phase 7.
+Codex does not deploy the application or mutate Railway configuration. After local verification and an explicit release decision, follow the [Railway owner deployment guide](docs/railway-deployment.md). It covers the existing two-service Web UI setup, repository-root builds, domains, variables, health checks, watch paths, smoke tests, cost controls, rollback, and the prototype's public-deployment boundary.

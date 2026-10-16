@@ -4,9 +4,9 @@ This file is the single source of truth for which phase **Proceed with the next 
 
 ## Current phase
 
-- Phase: **7 — Railway owner handoff**
-- Status: **ready**
-- Last updated: **2026-10-14**
+- Phase: **complete — all planned phases delivered**
+- Status: **complete**
+- Last updated: **2026-10-16**
 - Blocker: none
 
 ## Phase ledger
@@ -22,8 +22,8 @@ This file is the single source of truth for which phase **Proceed with the next 
 | 6 — Hardening and release-candidate verification | complete | `tasks/evidence/phase-6.md` | Reviewed through Phase 6.10 authorization |
 | 6.10 — Base UI component normalization | complete | `tasks/evidence/phase-6.10.md` | Reviewed through Phase 6.20 authorization |
 | 6.20 — Type-safe icon contracts | complete | `tasks/evidence/phase-6.20.md` | Reviewed through Phase 6.30 authorization |
-| 6.30 — Tailwind theme and cascade normalization | complete | `tasks/evidence/phase-6.30.md` | Awaiting user review |
-| 7 — Railway owner handoff | ready | — | — |
+| 6.30 — Tailwind theme and cascade normalization | complete | `tasks/evidence/phase-6.30.md` | Reviewed through Phase 7 authorization |
+| 7 — Railway owner handoff | complete | `tasks/evidence/phase-7.md` | Awaiting user review |
 
 ## Resume rule
 
