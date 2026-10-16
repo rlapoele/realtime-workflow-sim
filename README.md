@@ -51,13 +51,13 @@ npm run dev
 
 Then open [http://localhost:4321](http://localhost:4321). Choose a fictional workflow and select **Run workflow**. Active runs disable workflow switching; status changes and logs arrive progressively through Server-Sent Events; terminal runs expose **Run again**. The execution ID is stored in the page URL, so refreshing restores retained state from an authoritative snapshot and resumes live updates without replaying historical log chunks.
 
-The backend health endpoint is [http://localhost:3000/health](http://localhost:3000/health), and the public catalogue is [http://localhost:3000/workflows](http://localhost:3000/workflows). `POST /workflows/:workflowId/trigger` creates a new execution on every request and is therefore not safe to retry as an idempotent operation. `GET /executions/:executionId` returns its current authoritative snapshot. `GET /workflows/stream?executionId=...` opens the execution-scoped event stream.
+The backend health endpoint is [http://localhost:3000/health](http://localhost:3000/health), and the public catalogue is [http://localhost:3000/workflows](http://localhost:3000/workflows). `POST /workflows/:workflowId/trigger` creates a new execution on every accepted request and is therefore not safe to retry as an idempotent operation. That route alone is limited per client to 3 requests per 10 seconds and 10 per minute; the service also admits at most 25 simultaneous non-terminal executions. Either limit returns HTTP `429` through the shared error envelope. Accepted trigger responses expose rate-limit headers, while time-window rejections include the applicable retry header. `GET /executions/:executionId` returns its current authoritative snapshot. `GET /workflows/stream?executionId=...` opens the execution-scoped event stream.
 
 The interface reports `connecting`, `connected`, `reconnecting`, `disconnected`, or `completed`. Sequence gaps recover through the authoritative GET endpoint, while duplicate and stale events are ignored. Heartbeats keep the stream observable without causing execution refetches.
 
 The execution log follows new output while you remain near the bottom. Scrolling upward pauses that behavior and reveals **Jump to latest** so reading is never interrupted. The dashboard is keyboard-operable, reduced-motion aware, and responsive down to a 320 px viewport without page-level horizontal scrolling.
 
-Execution data is process-local: restarting the backend clears it. The interface detects an expired or missing execution and offers a new-run recovery action. Completed history is capped at 50 runs and accumulated logs at 64,000 characters per execution; active runs are never removed by retention.
+Execution data and admission controls are process-local: restarting the backend clears them. The interface detects an expired or missing execution and offers a new-run recovery action. Completed history is capped at 50 runs and accumulated logs at 64,000 characters per execution; active runs are never removed by retention, while new runs are rejected after the active-run cap is reached.
 
 The root process stops both applications when you press `Ctrl+C`.
 

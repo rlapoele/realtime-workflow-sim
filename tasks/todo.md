@@ -297,6 +297,36 @@ Only work on the phase marked current in `tasks/progress.md`. Check boxes requir
 
 Phase 7 begins only after the local guide and local release-candidate checks are complete. Docker remains optional and must not be introduced without a documented need and prior notice to the user.
 
+## Phase 7.10: Public-demo trigger safeguards
+
+**Outcome:** The public fictional demo bounds new workflow work without changing execution behavior, recovery, or the SSE protocol.
+
+**Tasks:**
+
+- [x] Apply two per-client rate windows only to `POST /workflows/:workflowId/trigger`: 3 requests per 10 seconds and 10 per minute.
+- [x] Return shared-contract HTTP `429` errors with standard throttler rate/retry metadata.
+- [x] Reject new workflow runs when 25 executions are already non-terminal, without evicting or cancelling active runs.
+- [x] Use Railway's client-address header with a validated IP and a direct-request fallback.
+- [x] Document local verification, Railway behavior, one-replica scope, and the remaining unauthenticated-demo boundary.
+
+**Acceptance criteria:**
+
+- [x] Health, catalogue, authoritative execution GET, and SSE routes are not throttled.
+- [x] Separate client addresses do not consume each other's trigger allowance.
+- [x] Unknown workflow IDs remain `404`, while time-window and active-cap rejections are `429`.
+- [x] Capacity becomes available naturally after terminal completion; no active execution is evicted.
+- [x] Limits are process-local and do not imply authentication or distributed abuse protection.
+
+**Verification:**
+
+- [x] Focused tests cover burst and sustained windows, response headers/envelopes, client separation, admission rejection, and capacity recovery.
+- [x] Clean install, dependency audit, complete tests, strict typechecks, and both production builds pass.
+- [x] The built backend production artifact returns `200`, three `202` trigger responses, then a `429` with the expected retry header and shared error body.
+- [x] Mutation checks prove the tests detect an off-by-one capacity boundary and an incorrect burst threshold.
+- [x] `git diff --check` and a five-axis scoped review pass when Git is available.
+
+**Dependencies:** Phase 7.
+
 ## Final checkpoint
 
 - [x] All phase evidence files exist and all phase acceptance criteria are checked.

@@ -24,6 +24,7 @@ This file is the single source of truth for which phase **Proceed with the next 
 | 6.20 — Type-safe icon contracts | complete | `tasks/evidence/phase-6.20.md` | Reviewed through Phase 6.30 authorization |
 | 6.30 — Tailwind theme and cascade normalization | complete | `tasks/evidence/phase-6.30.md` | Reviewed through Phase 7 authorization |
 | 7 — Railway owner handoff | complete | `tasks/evidence/phase-7.md` | Awaiting user review |
+| 7.10 — Public-demo trigger safeguards | complete | `tasks/evidence/phase-7.10.md` | Awaiting user review and release decision |
 
 ## Resume rule
 

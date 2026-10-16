@@ -98,6 +98,17 @@ Confirm that the public catalogue contains exactly four workflows and no private
 curl -sS http://localhost:3000/workflows
 ```
 
+Verify the trigger-only burst limit from a quiet backend (the first three status codes are `202`; the fourth is `429`):
+
+```sh
+for attempt in 1 2 3 4; do
+  curl -sS -o /dev/null -w '%{http_code}\n' \
+    -X POST http://localhost:3000/workflows/password-reset/trigger
+done
+```
+
+The automated backend suite also verifies the 10-per-minute sustained window, retry/rate-limit headers, per-client isolation, the shared `429` error envelope, and the 25-active-execution admission cap.
+
 ## Manual browser checklist
 
 Use a current desktop browser against the built application at <http://localhost:4321>.
@@ -162,4 +173,4 @@ Executions are intentionally in memory. A backend restart or completed-run reten
 
 ## Intended limitations
 
-This is a fictional, single-process demonstration. It intentionally has no authentication, database, durable jobs, multiple backend replicas, real integrations, workflow editing, cancellation, retries, approval decisions, or execution-history browser. Deployment and Railway configuration are outside this local guide.
+This is a fictional, single-process demonstration. It intentionally has no authentication, database, durable jobs, multiple backend replicas, real integrations, workflow editing, cancellation, retries, approval decisions, or execution-history browser. Trigger throttling and active-execution admission are in-memory safeguards for this one-backend-replica design, not distributed abuse prevention. Deployment and Railway configuration are outside this local guide.

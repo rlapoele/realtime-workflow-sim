@@ -21,8 +21,16 @@ export interface ExecutionRuntime {
 }
 
 export interface ExecutionLimits {
+  readonly maxActiveExecutions: number;
   readonly maxCompletedExecutions: number;
   readonly maxLogCharacters: number;
+}
+
+export class ExecutionCapacityError extends Error {
+  constructor(readonly limit: number) {
+    super(`The execution service is at its active-run limit of ${limit}.`);
+    this.name = "ExecutionCapacityError";
+  }
 }
 
 export const EXECUTION_RUNTIME = Symbol("EXECUTION_RUNTIME");
@@ -37,6 +45,7 @@ export const systemExecutionRuntime: ExecutionRuntime = {
 };
 
 export const defaultExecutionLimits: ExecutionLimits = {
+  maxActiveExecutions: 25,
   maxCompletedExecutions: 50,
   maxLogCharacters: 64_000,
 };
@@ -85,6 +94,9 @@ export class ExecutionService implements OnApplicationShutdown {
   trigger(workflowId: string): WorkflowExecution | undefined {
     const seed = this.catalogue.getSeed(workflowId);
     if (seed === undefined) return undefined;
+    if (this.activeExecutionCount() >= this.limits.maxActiveExecutions) {
+      throw new ExecutionCapacityError(this.limits.maxActiveExecutions);
+    }
 
     const execution: MutableExecution = {
       id: this.runtime.createId(),
@@ -350,6 +362,14 @@ export class ExecutionService implements OnApplicationShutdown {
 
   private isTerminal(status: ExecutionStatus): boolean {
     return status === "success" || status === "failed";
+  }
+
+  private activeExecutionCount(): number {
+    let count = 0;
+    for (const execution of this.executions.values()) {
+      if (!this.isTerminal(execution.status)) count += 1;
+    }
+    return count;
   }
 
   private snapshot(execution: MutableExecution): WorkflowExecution {

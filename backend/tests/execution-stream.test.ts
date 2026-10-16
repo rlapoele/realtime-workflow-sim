@@ -21,6 +21,7 @@ function createRuntime(): ExecutionRuntime {
 
 function createService(limits?: Partial<ExecutionLimits>) {
   return new ExecutionService(new WorkflowCatalogueService(), createRuntime(), {
+    maxActiveExecutions: limits?.maxActiveExecutions ?? 25,
     maxCompletedExecutions: limits?.maxCompletedExecutions ?? 50,
     maxLogCharacters: limits?.maxLogCharacters ?? 64_000,
   });

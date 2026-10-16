@@ -1,6 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import {
+  ExecutionCapacityError,
   ExecutionService,
   type ExecutionLimits,
   type ExecutionRuntime,
@@ -26,6 +27,7 @@ function trigger(service: ExecutionService, workflowId: string): WorkflowExecuti
 
 function createService(limits?: Partial<ExecutionLimits>) {
   return new ExecutionService(new WorkflowCatalogueService(), createRuntime(), {
+    maxActiveExecutions: limits?.maxActiveExecutions ?? 25,
     maxCompletedExecutions: limits?.maxCompletedExecutions ?? 50,
     maxLogCharacters: limits?.maxLogCharacters ?? 64_000,
   });
@@ -158,6 +160,19 @@ describe("ExecutionService", () => {
 
     expect(service.get(active.id)?.status).toBe("running");
     expect([service.get(first.id), service.get(second.id)].filter(Boolean)).toHaveLength(1);
+  });
+
+  it("rejects new executions at the active-run cap and admits them after capacity frees", async () => {
+    const service = createService({ maxActiveExecutions: 2 });
+    trigger(service, "employee-onboarding");
+    trigger(service, "password-reset");
+
+    expect(() => service.trigger("employee-offboarding")).toThrow(ExecutionCapacityError);
+    expect(service.trigger("missing-workflow")).toBeUndefined();
+
+    await vi.runAllTimersAsync();
+
+    expect(() => trigger(service, "employee-offboarding")).not.toThrow();
   });
 
   it("cancels scheduled work during application shutdown", async () => {

@@ -4,14 +4,14 @@ Use this guide after the [local release-candidate test guide](local-testing.md) 
 
 The Railway guidance and pricing links in this document were checked on 2026-10-16. Re-check them before a later deployment because the product UI, limits, and prices can change.
 
-## Current handoff state
+## Current deployment state
 
-The existing Railway project already contains two staged services detected from the GitHub repository:
+As reported by the owner on 2026-10-16, the Railway project is live with two services built from the GitHub repository:
 
 - `@agentflow/backend`
 - `@agentflow/frontend`
 
-Both services point to the `releases` branch. Railway has staged their Railpack builder, scoped workspace build/start commands, and one service-specific watch path, but the changes have not been applied or deployed. Do not select **Deploy** yet: the current `releases` branch is still the old backup revision, and domains, variables, health checks, and complete watch paths must be prepared first.
+Both services point to the `releases` branch. Their reported public origins are `https://agentflowbackend-production.up.railway.app` and `https://agentflowfrontend-production.up.railway.app`. The owner completed the initial settings and deployment; the instructions below remain the reproducible configuration and future release procedure. Codex did not mutate Railway or perform that deployment.
 
 ## Deployment invariants
 
@@ -23,7 +23,7 @@ Both services point to the `releases` branch. Railway has staged their Railpack 
 - Keep **Serverless** disabled for the initial deployment. Sleeping or restarting the backend discards in-memory executions, and a cold start would interrupt the intended live demonstration.
 - Do not add `PORT`. Railway supplies it to each deployment, and both applications already listen on `0.0.0.0`.
 
-## 1. Complete both staged service settings
+## 1. Configure both service settings
 
 Open each service's **Settings** page. Keep **Builder** set to **Railpack** and Root Directory unset.
 
@@ -130,7 +130,7 @@ Use the Railway variable-reference picker for `RAILWAY_PUBLIC_DOMAIN` if desired
 
 `PUBLIC_API_URL` is exposed to browser code and is embedded by Astro during the frontend build. Changing it requires a frontend rebuild/redeploy; restarting an already-built frontend is insufficient. `FRONTEND_ORIGIN` is an exact CORS origin and must match the browser address bar, including scheme and hostname, with no path or trailing slash. Railway makes service variables available during builds and runtime; see [Using Variables](https://docs.railway.com/variables) and [Frontend Environment Variables](https://docs.railway.com/guides/frontend-environment-variables).
 
-Before continuing, review Railway's staged-change summary. It should include both service definitions, the settings above, both domains, and all variables. Do not place credentials or personal production data in any variable.
+Before continuing, review Railway's pending-change summary. For an initial setup it should include both service definitions, the settings above, both domains, and all variables. For later edits, confirm only the intended changes are listed. Do not place credentials or personal production data in any variable.
 
 ## 4. Promote an approved revision
 
@@ -160,7 +160,7 @@ The `git push origin releases` command is the production trigger. Stop before it
 
 Railway automatically deploys pushes to a service's connected branch. Confirm both services still show `releases` under **Settings → Source**; see [GitHub Autodeploys](https://docs.railway.com/deployments/github-autodeploys).
 
-For the first release, Railway may show the already-staged **Deploy Changes** action in addition to the GitHub-triggered source revision. Review its summary and apply the prepared settings only when the promoted `releases` revision is visible. Do not create another service or change either service to `dev` or `main`.
+For an initial release or later settings edit, Railway may show **Deploy Changes** in addition to the GitHub-triggered source revision. Review its summary and apply the prepared settings only when the intended `releases` revision is visible. Do not create another service or change either service to `dev` or `main`.
 
 ## 5. Observe the deployment
 
@@ -208,6 +208,8 @@ curl -sS https://<backend-domain>/workflows
 
 It must expose four fictional workflow definitions and no private simulation scripts.
 
+The backend limits only workflow-trigger requests to 3 per 10 seconds and 10 per minute for each Railway-provided client address. It also rejects new runs when 25 executions are already active. Expected rejections use HTTP `429`; accepted trigger responses include `X-RateLimit-*` headers and time-window rejections include the applicable `Retry-After-*` header. Keep one backend replica because both execution state and these safeguards are process-local.
+
 Open `https://<frontend-domain>` in a current desktop browser and confirm:
 
 - the page identifies itself as a simulation and lists all four workflows;
@@ -248,6 +250,10 @@ Redeploy the frontend after changing `PUBLIC_API_URL`. The value is compiled int
 ### A refreshed execution disappeared
 
 The backend keeps executions only in memory. A restart, rollback, redeploy, or retention expiry makes an old execution unavailable; start a new run.
+
+### Starting a workflow returns `429`
+
+Wait for the `Retry-After-burst` or `Retry-After-sustained` interval when a time-window limit was reached. If no retry header is present, the 25-active-execution cap was reached; wait for an active simulation to finish. Do not add replicas to bypass the cap because execution and SSE state are intentionally process-local.
 
 ## Hobby cost awareness
 
@@ -290,4 +296,4 @@ This backup synchronization is not part of deployment and must not be performed 
 
 ## Intended production boundary
 
-This remains a bounded fictional demonstration: unauthenticated, single-process, and in-memory, with no database, durable jobs, real integrations, rate limiting, multi-replica execution state, or execution history. Treat its public URL as a demo endpoint, monitor usage, and do not enter confidential or production data.
+This remains a bounded fictional demonstration: unauthenticated, single-process, and in-memory, with no database, durable jobs, real integrations, distributed rate limiting, multi-replica execution state, or execution history. Trigger throttling and the active-run cap reduce accidental or basic automated abuse; they do not replace authentication, an edge firewall, or distributed abuse controls. Treat its public URL as a demo endpoint, monitor usage, and do not enter confidential or production data.

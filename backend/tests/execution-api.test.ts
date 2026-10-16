@@ -8,7 +8,10 @@ import { firstValueFrom, of } from "rxjs";
 import { describe, expect, it } from "vitest";
 
 import { ExecutionsController } from "../src/executions/executions.controller.js";
-import { ExecutionService } from "../src/executions/execution.service.js";
+import {
+  ExecutionCapacityError,
+  ExecutionService,
+} from "../src/executions/execution.service.js";
 import { WorkflowsController } from "../src/workflows/workflows.controller.js";
 
 const execution = {
@@ -111,6 +114,31 @@ describe("execution API", () => {
 
     expect(workflows.triggerWorkflow("employee-onboarding")).toEqual(execution);
     expect(executions.getExecution("execution-1")).toEqual(execution);
+  });
+
+  it("returns the shared 429 envelope when active execution capacity is exhausted", () => {
+    const service = {
+      ...serviceStub(),
+      trigger: () => {
+        throw new ExecutionCapacityError(25);
+      },
+    } as unknown as ExecutionService;
+    const controller = new WorkflowsController({ listDefinitions: () => [] } as never, service);
+
+    try {
+      controller.triggerWorkflow("employee-onboarding");
+      throw new Error("Expected request to fail");
+    } catch (error) {
+      expect(error).toBeInstanceOf(HttpException);
+      const exception = error as HttpException;
+      expect(exception.getStatus()).toBe(HttpStatus.TOO_MANY_REQUESTS);
+      expect(exception.getResponse()).toEqual({
+        error: {
+          code: "too_many_requests",
+          message: expect.stringContaining("Try again"),
+        },
+      });
+    }
   });
 
   it.each([

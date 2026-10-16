@@ -9,13 +9,18 @@ import {
   Post,
   Query,
   Sse,
+  UseGuards,
 } from "@nestjs/common";
 import type { Observable } from "rxjs";
 import { map } from "rxjs";
 
 import type { WorkflowDefinition, WorkflowExecution } from "../../../shared/types.js";
-import { ExecutionService } from "../executions/execution.service.js";
-import { notFound } from "../http-errors.js";
+import {
+  ExecutionCapacityError,
+  ExecutionService,
+} from "../executions/execution.service.js";
+import { notFound, tooManyRequests } from "../http-errors.js";
+import { TriggerThrottlerGuard } from "./trigger-throttler.guard.js";
 import { WorkflowCatalogueService } from "./workflow-catalogue.service.js";
 
 @Controller("workflows")
@@ -49,8 +54,19 @@ export class WorkflowsController {
 
   @Post(":workflowId/trigger")
   @HttpCode(HttpStatus.ACCEPTED)
+  @UseGuards(TriggerThrottlerGuard)
   triggerWorkflow(@Param("workflowId") workflowId: string): WorkflowExecution {
-    const execution = this.executions.trigger(workflowId);
+    let execution: WorkflowExecution | undefined;
+    try {
+      execution = this.executions.trigger(workflowId);
+    } catch (error) {
+      if (error instanceof ExecutionCapacityError) {
+        throw tooManyRequests(
+          "The demo is handling the maximum number of active executions. Try again after a run completes.",
+        );
+      }
+      throw error;
+    }
     if (execution === undefined) {
       throw notFound(`Workflow "${workflowId}" was not found.`);
     }
